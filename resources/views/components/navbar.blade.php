@@ -1,12 +1,42 @@
 <nav class="flex flex-col md:flex-row md:items-center justify-between gap-4 py-4 px-4 sm:px-6 lg:px-8 shrink-0">
-    <!-- Izquierda: Título de la Página (Estilo Venus) -->
-    <div class="flex flex-col">
-        <h1 class="text-3xl font-extrabold text-[#1B254B] tracking-tight mt-1 leading-tight">
-            Bienvenido, {{ Auth::user()->name }}!
-        </h1>
-        <p class="text-xs font-semibold text-[#A3AED0] mt-1">
-            Esto es lo que está sucediendo con tu cuenta hoy.
-        </p>
+    <!-- Izquierda: Título de la Página (Estilo Venus) + Billetera al lado -->
+    <div class="flex flex-col lg:flex-row lg:items-center gap-6">
+        <div class="flex flex-col">
+            <h1 class="text-3xl font-extrabold text-[#1B254B] tracking-tight mt-1 leading-tight">
+                Bienvenido, {{ Auth::user()->name }}!
+            </h1>
+            <p class="text-xs font-semibold text-[#A3AED0] mt-1">
+                Esto es lo que está sucediendo con tu cuenta hoy.
+            </p>
+        </div>
+
+        <!-- Tarjeta de Billetera (Credit Balance Style Figma en el Navbar) -->
+        <div class="bg-gradient-to-br from-[#7A5CFF] to-[#4318FF] rounded-[20px] p-4 text-white relative overflow-hidden flex flex-col justify-between w-64 h-24 shadow-[0px_10px_30px_rgba(112,144,176,0.12)] shrink-0 select-none">
+            <!-- Brillo diagonal de Figma -->
+            <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform skew-x-12"></div>
+            
+            <!-- Contenido de la Billetera -->
+            <div class="relative z-10 flex justify-between items-start">
+                <div class="flex flex-col">
+                    <span class="text-[9px] font-bold text-white/80 uppercase tracking-wider leading-none">Saldo de Crédito</span>
+                    <span class="text-xl font-black text-white mt-1 leading-none">$25,215</span>
+                </div>
+                
+                <!-- Botón de Tres Puntos -->
+                <button class="text-white hover:text-white/80 transition-colors cursor-pointer leading-none">
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 12a2 2 0 11-4 0 2 2 0 014 0zm8 0a2 2 0 11-4 0 2 2 0 014 0zm8 0a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Gráfico de Ondulación Blanco (Figma Style) -->
+            <div class="relative z-10 flex justify-end items-end h-6 w-full">
+                <svg class="w-24 h-6 stroke-white fill-none stroke-[2.5]" viewBox="0 0 100 30" preserveAspectRatio="none">
+                    <path d="M 0,20 Q 12,28 25,12 T 50,15 T 75,5 T 100,10" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+        </div>
     </div>
 
     <!-- Derecha: Panel de Control Flotante (Estilo Venus) -->
