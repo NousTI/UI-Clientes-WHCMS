@@ -4,6 +4,9 @@
         <h1 class="text-3xl font-extrabold text-[#1B254B] tracking-tight mt-1 leading-tight">
             Bienvenido, {{ Auth::user()->name }}!
         </h1>
+        <p class="text-xs font-semibold text-[#A3AED0] mt-1">
+            Esto es lo que está sucediendo con tu cuenta hoy.
+        </p>
     </div>
 
     <!-- Derecha: Panel de Control Flotante (Estilo Venus) -->
