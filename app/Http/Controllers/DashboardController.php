@@ -8,4 +8,19 @@ class DashboardController extends Controller
     {
         return view('dashboard.index');
     }
+
+    public function services()
+    {
+        return view('dashboard.services');
+    }
+
+    public function domains()
+    {
+        return view('dashboard.domains');
+    }
+
+    public function invoices()
+    {
+        return view('dashboard.invoices');
+    }
 }

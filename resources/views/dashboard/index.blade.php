@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="space-y-8">
+<div class="space-y-4">
  
     <!-- Banner de Alerta de Pago Pendiente -->
     <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="bg-gradient-to-r from-[#A31D1D] to-[#801616] rounded-[20px] p-4 text-white relative overflow-hidden shadow-[0px_18px_40px_rgba(163,29,29,0.12)] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none group/alert">
@@ -18,15 +18,15 @@
                 </svg>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                <span class="text-xs font-bold leading-tight text-white">INV-2091 overdue 3 days — service suspension in 24h.</span>
-                <span class="text-xs font-medium leading-tight text-[#FFE680]">Domain acme.io expires Jan 15.</span>
+                <span class="text-xs font-bold leading-tight text-white">Factura INV-2091 vencida hace 3 días — suspensión de servicio en 24h.</span>
+                <span class="text-xs font-medium leading-tight text-[#FFE680]">Dominio acme.io vence el 15 de Ene.</span>
             </div>
         </div>
         
         <div class="relative z-10 flex items-center gap-3 shrink-0 self-end sm:self-auto">
             <!-- Botón Pay Now -->
             <a href="#" class="bg-[#8AEF97] hover:bg-[#7AD887] active:scale-95 text-[#1B254B] text-[10px] font-extrabold py-2.5 px-4 rounded-xl transition-all shadow-sm shrink-0 flex items-center justify-center">
-                Pay now
+                Pagar ahora
             </a>
             <!-- Botón Cerrar -->
             <button @click="show = false" class="text-white/60 hover:text-white transition-colors cursor-pointer p-1 rounded-lg hover:bg-white/10 shrink-0" title="Cerrar aviso">
@@ -40,7 +40,7 @@
     <!-- Rejilla de Tarjetas de Estadísticas  -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <!-- Services Card (Servicios) -->
-        <x-stat-card title="Servicios" value="3" subtext="3 Servicios Activos" illustration="images/cloud-server-svgrepo-com.svg">
+        <x-stat-card title="Servicios" value="3" subtext="3 Servicios Activos" illustration="assets/images/cloud-server-svgrepo-com.svg">
             <!-- Icono Cubo/Servicios -->
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
@@ -48,7 +48,7 @@
         </x-stat-card>
 
         <!-- Invoices Due Card (Facturas Pendientes) -->
-        <x-stat-card title="Facturas Pendientes" value="1" subtext="1 Factura Pendiente" illustration="images/bill-svgrepo-com.svg">
+        <x-stat-card title="Facturas Pendientes" value="1" subtext="1 Factura Pendiente" illustration="assets/images/bill-svgrepo-com.svg">
             <!-- Icono Factura/Documento -->
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -56,7 +56,7 @@
         </x-stat-card>
 
         <!-- Domains Card (Dominios) -->
-        <x-stat-card title="Dominios" value="2" subtext="2 Dominios Registrados" illustration="images/cloud-database-svgrepo-com.svg">
+        <x-stat-card title="Dominios" value="2" subtext="2 Dominios Registrados" illustration="assets/images/cloud-database-svgrepo-com.svg">
             <!-- Icono Globo -->
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253" />
@@ -64,7 +64,7 @@
         </x-stat-card>
 
         <!-- Support Tickets Card (Tickets de Soporte) -->
-        <x-stat-card title="Tickets de Soporte" value="3" subtext="3 Tickets Abiertos" illustration="images/disk1-svgrepo-com.svg">
+        <x-stat-card title="Tickets de Soporte" value="3" subtext="3 Tickets Abiertos" illustration="assets/images/disk1-svgrepo-com.svg">
             <!-- Icono Auriculares/Soporte -->
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2zM12 11a3 3 0 100-6 3 3 0 000 6z" />
@@ -72,7 +72,7 @@
         </x-stat-card>
     </div>
 
-    <!-- FASE 5 & 6: Servicios Activos y Anuncios -->
+    <!-- Servicios Activos y Anuncios -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Tabla de Servicios Activos -->
         <div class="lg:col-span-2 bg-white rounded-[20px] p-6 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50">
@@ -309,85 +309,85 @@
         </div>
     </div>
 
-    <!-- FASE 7: Facturas y Tickets de Soporte -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!--  Facturas y Tickets de Soporte -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <!-- Tarjeta de Facturas -->
-        <div class="bg-white rounded-[20px] p-6 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50 flex flex-col justify-between transition-all hover:scale-[1.01] duration-200 min-h-[380px]">
+        <div class="bg-white rounded-[16px] p-4 shadow-[0px_18px_40px_rgba(112,144,176,0.04)] border border-white/50 flex flex-col justify-between transition-all hover:scale-[1.01] duration-200 min-h-[290px]">
             <div>
                 <!-- Encabezado de Facturas -->
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center justify-between mb-3">
                     <div class="flex flex-col">
-                        <h3 class="text-lg font-extrabold text-[#1B254B] tracking-tight">Facturas Recientes</h3>
+                        <h3 class="text-base font-extrabold text-[#1B254B] tracking-tight">Facturas Recientes</h3>
                         <span class="text-[10px] text-[#A3AED0] font-bold mt-0.5">Control de pagos y transacciones pendientes</span>
                     </div>
                     <!-- Icono Factura -->
-                    <div class="h-9 w-9 rounded-xl bg-[#F4F7FE] text-[#4318FF] flex items-center justify-center shrink-0">
-                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <div class="h-8 w-8 rounded-lg bg-[#F4F7FE] text-[#4318FF] flex items-center justify-center shrink-0">
+                        <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                     </div>
                 </div>
 
                 <!-- Lista de Facturas -->
-                <div class="space-y-4">
+                <div class="space-y-2.5">
                     <!-- Factura 1: Vencida -->
-                    <div class="flex items-center justify-between p-3.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                    <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-9 w-9 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <div class="h-8 w-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                                 </svg>
                             </div>
                             <div class="flex flex-col min-w-0">
                                 <span class="text-xs font-bold text-[#1B254B]">Factura #INV-2091</span>
-                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Vence: 05 de Julio, 2026</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Vence: 05 Jul, 2026</span>
                             </div>
                         </div>
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2">
                             <span class="text-xs font-black text-[#1B254B]">$29.00 USD</span>
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-extrabold bg-red-50 text-red-500 select-none">
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-red-50 text-red-500 select-none">
                                 Vencida
                             </span>
                         </div>
                     </div>
 
                     <!-- Factura 2: Pagada -->
-                    <div class="flex items-center justify-between p-3.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                    <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-9 w-9 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <div class="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                             <div class="flex flex-col min-w-0">
                                 <span class="text-xs font-bold text-[#1B254B]">Factura #INV-2090</span>
-                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Pagada: 28 de Junio, 2026</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Pagada: 28 Jun, 2026</span>
                             </div>
                         </div>
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2">
                             <span class="text-xs font-black text-[#1B254B]">$89.00 USD</span>
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-extrabold bg-emerald-50 text-emerald-500 select-none">
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-emerald-50 text-emerald-500 select-none">
                                 Pagada
                             </span>
                         </div>
                     </div>
 
                     <!-- Factura 3: Pagada -->
-                    <div class="flex items-center justify-between p-3.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                    <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-9 w-9 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <div class="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                             <div class="flex flex-col min-w-0">
                                 <span class="text-xs font-bold text-[#1B254B]">Factura #INV-2089</span>
-                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Pagada: 14 de Junio, 2026</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Pagada: 14 Jun, 2026</span>
                             </div>
                         </div>
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2">
                             <span class="text-xs font-black text-[#1B254B]">$12.00 USD</span>
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-extrabold bg-emerald-50 text-emerald-500 select-none">
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-emerald-50 text-emerald-500 select-none">
                                 Pagada
                             </span>
                         </div>
@@ -396,83 +396,83 @@
             </div>
 
             <!-- Botón Ver Todos -->
-            <a href="#" class="mt-6 flex items-center justify-center gap-2 bg-[#F4F7FE] hover:bg-[#E0E5F2] text-xs font-extrabold text-[#4318FF] py-3.5 px-4 rounded-xl border border-[#E0E5F2] transition-all group duration-200">
+            <a href="#" class="mt-3.5 flex items-center justify-center gap-1.5 bg-[#F4F7FE] hover:bg-[#E0E5F2] text-[10px] font-extrabold text-[#4318FF] py-2.5 px-3 rounded-lg border border-[#E0E5F2] transition-all group duration-200">
                 <span>Ver todas las facturas</span>
-                <svg class="h-3.5 w-3.5 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <svg class="h-3 w-3 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
             </a>
         </div>
 
         <!-- Tarjeta de Tickets de Soporte -->
-        <div class="bg-white rounded-[20px] p-6 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50 flex flex-col justify-between transition-all hover:scale-[1.01] duration-200 min-h-[380px]">
+        <div class="bg-white rounded-[16px] p-4 shadow-[0px_18px_40px_rgba(112,144,176,0.04)] border border-white/50 flex flex-col justify-between transition-all hover:scale-[1.01] duration-200 min-h-[290px]">
             <div>
                 <!-- Encabezado de Tickets -->
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center justify-between mb-3">
                     <div class="flex flex-col">
-                        <h3 class="text-lg font-extrabold text-[#1B254B] tracking-tight">Tickets de Soporte</h3>
+                        <h3 class="text-base font-extrabold text-[#1B254B] tracking-tight">Tickets de Soporte</h3>
                         <span class="text-[10px] text-[#A3AED0] font-bold mt-0.5">Estado de tus consultas técnicas activas</span>
                     </div>
                     <!-- Icono Soporte -->
-                    <div class="h-9 w-9 rounded-xl bg-[#F4F7FE] text-[#4318FF] flex items-center justify-center shrink-0">
-                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <div class="h-8 w-8 rounded-lg bg-[#F4F7FE] text-[#4318FF] flex items-center justify-center shrink-0">
+                        <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a.75.75 0 01-1.074-.765 6.002 6.002 0 011.164-3.41C4.412 15.357 3.75 13.748 3.75 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
                         </svg>
                     </div>
                 </div>
 
                 <!-- Lista de Tickets -->
-                <div class="space-y-4">
+                <div class="space-y-2.5">
                     <!-- Ticket 1: Abierto -->
-                    <div class="flex items-center justify-between p-3.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                    <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-9 w-9 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <div class="h-8 w-8 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                             <div class="flex flex-col min-w-0">
                                 <span class="text-xs font-bold text-[#1B254B] truncate">Error de conexión en Base de Datos Postgres</span>
-                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">ID: #TK-4921 • Actualizado hace 15m</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">ID: #TK-4921 • Act: 15m</span>
                             </div>
                         </div>
-                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-extrabold bg-amber-50 text-amber-500 select-none shrink-0">
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-amber-50 text-amber-500 select-none shrink-0">
                             En Proceso
                         </span>
                     </div>
 
                     <!-- Ticket 2: Respondido -->
-                    <div class="flex items-center justify-between p-3.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                    <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-9 w-9 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <div class="h-8 w-8 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
+                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-2.503a8.01 8.01 0 001.88-.188c1.853-.5 3.26-2.09 3.26-4.004V8.585c0-1.925-1.4-3.513-3.26-4.01a14.963 14.963 0 00-7.06 0C4.9 5.072 3.5 6.66 3.5 8.586v4.174z" />
                                 </svg>
                             </div>
                             <div class="flex flex-col min-w-0">
                                 <span class="text-xs font-bold text-[#1B254B] truncate">Consulta sobre ampliación de disco</span>
-                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">ID: #TK-4819 • Actualizado hace 2h</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">ID: #TK-4819 • Act: 2h</span>
                             </div>
                         </div>
-                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-extrabold bg-[#4318FF]/5 text-[#4318FF] select-none shrink-0">
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-[#4318FF]/5 text-[#4318FF] select-none shrink-0">
                             Respondido
                         </span>
                     </div>
 
                     <!-- Ticket 3: Cerrado -->
-                    <div class="flex items-center justify-between p-3.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                    <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-9 w-9 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <div class="h-8 w-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
+                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                             <div class="flex flex-col min-w-0">
                                 <span class="text-xs font-bold text-[#1B254B] truncate">Instalación de SSL Wildcard en nebulix.io</span>
-                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">ID: #TK-4752 • Cerrado hace 1d</span>
+                                <span class="text-[9px] text-[#A3AED0] font-semibold mt-0.5">ID: #TK-4752 • Cerrado hace 1d</span>
                             </div>
                         </div>
-                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-extrabold bg-slate-100 text-slate-500 select-none shrink-0">
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-slate-100 text-slate-500 select-none shrink-0">
                             Cerrado
                         </span>
                     </div>
@@ -480,12 +480,12 @@
             </div>
 
             <!-- Botones de Acción -->
-            <div class="mt-6 flex flex-col sm:flex-row gap-3">
-                <a href="#" class="flex-1 flex items-center justify-center gap-2 bg-[#F4F7FE] hover:bg-[#E0E5F2] text-xs font-extrabold text-[#4318FF] py-3.5 px-4 rounded-xl border border-[#E0E5F2] transition-all group duration-200">
+            <div class="mt-3.5 flex flex-col sm:flex-row gap-2">
+                <a href="#" class="flex-1 flex items-center justify-center gap-1.5 bg-[#F4F7FE] hover:bg-[#E0E5F2] text-[10px] font-extrabold text-[#4318FF] py-2.5 px-3 rounded-lg border border-[#E0E5F2] transition-all group duration-200">
                     <span>Ver todos</span>
                 </a>
-                <a href="#" class="flex-1 flex items-center justify-center gap-2 bg-[#4318FF] hover:bg-[#3b15e0] active:scale-95 text-white text-xs font-extrabold py-3.5 px-4 rounded-xl transition-all shadow-[0px_10px_20px_rgba(67,24,255,0.15)] duration-200">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <a href="#" class="flex-1 flex items-center justify-center gap-1.5 bg-[#4318FF] hover:bg-[#3b15e0] active:scale-95 text-white text-[10px] font-extrabold py-2.5 px-3 rounded-lg transition-all shadow-[0px_8px_20px_rgba(67,24,255,0.15)] duration-200">
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
                     <span>Nuevo Ticket</span>

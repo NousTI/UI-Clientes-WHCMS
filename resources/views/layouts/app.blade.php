@@ -1,5 +1,12 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" 
+      class="h-full scroll-smooth" 
+      x-data="{ 
+          darkMode: localStorage.getItem('darkMode') === 'true',
+          sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
+          sidebarOpen: false 
+      }"
+      x-bind:class="{ 'dark': darkMode }">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,8 +21,13 @@
 
     <!-- Styles / Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Estilos de soporte para evitar parpadeos de AlpineJS -->
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
-<body class="h-full bg-[#F4F7FE] font-['Plus_Jakarta_Sans',sans-serif] text-[#1B254B] antialiased" x-data="{ sidebarOpen: false }">
+<body class="h-full bg-[#F4F7FE] dark:bg-[#0B0F19] font-['Plus_Jakarta_Sans',sans-serif] text-[#1B254B] dark:text-[#F4F7FE] antialiased transition-colors duration-200">
 
     <div class="flex h-screen overflow-hidden">
         
@@ -34,6 +46,7 @@
             x-transition:leave-end="opacity-0"
             class="fixed inset-0 z-40 bg-slate-900/20 backdrop-blur-xs lg:hidden"
             style="display: none;"
+            x-cloak
         ></div>
 
         <!-- Main Content Area -->

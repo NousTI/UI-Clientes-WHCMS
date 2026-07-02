@@ -58,7 +58,7 @@
             </svg>
         </button>
 
-        <!-- Notificaciones (Estilo Venus Dropdown) -->
+        <!-- Notificaciones  -->
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open" @click.outside="open = false" class="relative rounded-full p-2 text-[#A3AED0] hover:text-[#1B254B] hover:bg-[#F4F7FE]/50 transition-colors cursor-pointer">
                 <span class="sr-only">Notificaciones</span>
