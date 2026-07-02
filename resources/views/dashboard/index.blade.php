@@ -5,6 +5,38 @@
 @section('content')
 <div class="space-y-8">
  
+    <!-- Banner de Alerta de Pago Pendiente -->
+    <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="bg-gradient-to-r from-[#A31D1D] to-[#801616] rounded-[20px] p-4 text-white relative overflow-hidden shadow-[0px_18px_40px_rgba(163,29,29,0.12)] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none group/alert">
+        <!-- Figma-style overlay glow -->
+        <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform skew-y-12 transition-transform duration-750 group-hover/alert:translate-x-full"></div>
+        
+        <div class="relative z-10 flex items-center gap-3">
+            <!-- Icono Alerta / Exclamación -->
+            <div class="h-8 w-8 rounded-lg bg-white/10 text-white flex items-center justify-center shrink-0">
+                <svg class="h-5 w-5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                </svg>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                <span class="text-xs font-bold leading-tight text-white">INV-2091 overdue 3 days — service suspension in 24h.</span>
+                <span class="text-xs font-medium leading-tight text-[#FFE680]">Domain acme.io expires Jan 15.</span>
+            </div>
+        </div>
+        
+        <div class="relative z-10 flex items-center gap-3 shrink-0 self-end sm:self-auto">
+            <!-- Botón Pay Now -->
+            <a href="#" class="bg-[#8AEF97] hover:bg-[#7AD887] active:scale-95 text-[#1B254B] text-[10px] font-extrabold py-2.5 px-4 rounded-xl transition-all shadow-sm shrink-0 flex items-center justify-center">
+                Pay now
+            </a>
+            <!-- Botón Cerrar -->
+            <button @click="show = false" class="text-white/60 hover:text-white transition-colors cursor-pointer p-1 rounded-lg hover:bg-white/10 shrink-0" title="Cerrar aviso">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
     <!-- Rejilla de Tarjetas de Estadísticas  -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <!-- Services Card (Servicios) -->
@@ -40,160 +72,425 @@
         </x-stat-card>
     </div>
 
-    <!-- FASE 5: Tabla de Servicios Activos -->
-    <div class="bg-white rounded-[20px] p-6 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50">
-        <!-- Encabezado de la Tabla -->
-        <div class="flex items-center justify-between mb-6">
-            <div class="flex flex-col">
-                <h3 class="text-lg font-extrabold text-[#1B254B] tracking-tight">Servicios Activos</h3>
-                <span class="text-[10px] text-[#A3AED0] font-bold mt-0.5">Lista de servicios activos asociados a tu cuenta</span>
+    <!-- FASE 5 & 6: Servicios Activos y Anuncios -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Tabla de Servicios Activos -->
+        <div class="lg:col-span-2 bg-white rounded-[20px] p-6 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50">
+            <!-- Encabezado de la Tabla -->
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex flex-col">
+                    <h3 class="text-lg font-extrabold text-[#1B254B] tracking-tight">Servicios Activos</h3>
+                    <span class="text-[10px] text-[#A3AED0] font-bold mt-0.5">Lista de servicios activos asociados a tu cuenta</span>
+                </div>
+                <!-- Botón de Opciones (Venus Style) -->
+                <button class="h-9 w-9 rounded-xl bg-[#F4F7FE] text-[#4318FF] hover:bg-[#E0E5F2] transition-colors flex items-center justify-center cursor-pointer" title="Ver todos los servicios">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                    </svg>
+                </button>
             </div>
-            <!-- Botón de Opciones (Venus Style) -->
-            <button class="h-9 w-9 rounded-xl bg-[#F4F7FE] text-[#4318FF] hover:bg-[#E0E5F2] transition-colors flex items-center justify-center cursor-pointer" title="Ver todos los servicios">
-                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                </svg>
-            </button>
+
+            <!-- Contenedor Responsive para Tabla -->
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[600px] border-collapse">
+                    <thead>
+                        <tr class="border-b border-[#F4F7FE] text-left">
+                            <th class="text-[10px] font-bold text-[#A3AED0] uppercase tracking-wider pb-3 pl-2">Servicio</th>
+                            <th class="text-[10px] font-bold text-[#A3AED0] uppercase tracking-wider pb-3">Dominio</th>
+                            <th class="text-[10px] font-bold text-[#A3AED0] uppercase tracking-wider pb-3">Precio</th>
+                            <th class="text-[10px] font-bold text-[#A3AED0] uppercase tracking-wider pb-3">Próximo Pago</th>
+                            <th class="text-[10px] font-bold text-[#A3AED0] uppercase tracking-wider pb-3 pr-2 text-right">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[#F4F7FE] align-middle">
+                        <!-- Fila 1: Cloud Hosting -->
+                        <tr class="hover:bg-[#F4F7FE]/20 transition-colors duration-150">
+                            <td class="py-4 pl-2 flex items-center gap-3">
+                                <!-- Miniatura Icono de Nube/Servicio -->
+                                <div class="h-9 w-9 rounded-lg bg-[#4318FF]/5 text-[#4318FF] flex items-center justify-center shrink-0">
+                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3V7.5a3 3 0 013-3h13.5a3 3 0 013 3v3.75a3 3 0 01-3 3zm-13.5 0v3.75a3 3 0 003 3h13.5a3 3 0 003-3v-3.75m-16.5-3h16.5" />
+                                    </svg>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-bold text-[#1B254B]">Cloud VPS Premium</span>
+                                    <span class="text-[9px] text-[#A3AED0] font-semibold">2 vCPU / 4 GB RAM</span>
+                                </div>
+                            </td>
+                            <td class="py-4">
+                                <span class="text-xs font-bold text-[#1B254B]">nebulix.io</span>
+                            </td>
+                            <td class="py-4">
+                                <span class="text-xs font-bold text-[#1B254B]">$29.00 USD <span class="text-[9px] text-[#A3AED0] font-semibold">/mes</span></span>
+                            </td>
+                            <td class="py-4">
+                                <span class="text-xs font-bold text-[#1B254B]">28 de Julio, 2026</span>
+                            </td>
+                            <td class="py-4 pr-2 text-right">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-50 text-emerald-500">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                    Activo
+                                </span>
+                            </td>
+                        </tr>
+
+                        <!-- Fila 2: Database -->
+                        <tr class="hover:bg-[#F4F7FE]/20 transition-colors duration-150">
+                            <td class="py-4 pl-2 flex items-center gap-3">
+                                <!-- Miniatura DB -->
+                                <div class="h-9 w-9 rounded-lg bg-[#4318FF]/5 text-[#4318FF] flex items-center justify-center shrink-0">
+                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75" />
+                                    </svg>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-bold text-[#1B254B]">Base de Datos Dedicada</span>
+                                    <span class="text-[9px] text-[#A3AED0] font-semibold">PostgreSQL v16</span>
+                                </div>
+                            </td>
+                            <td class="py-4">
+                                <span class="text-xs font-bold text-[#1B254B]">db.nebulix.io</span>
+                            </td>
+                            <td class="py-4">
+                                <span class="text-xs font-bold text-[#1B254B]">$89.00 USD <span class="text-[9px] text-[#A3AED0] font-semibold">/mes</span></span>
+                            </td>
+                            <td class="py-4">
+                                <span class="text-xs font-bold text-[#1B254B]">02 de Agosto, 2026</span>
+                            </td>
+                            <td class="py-4 pr-2 text-right">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-50 text-emerald-500">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                    Activo
+                                </span>
+                            </td>
+                        </tr>
+
+                        <!-- Fila 3: SSL Certificate -->
+                        <tr class="hover:bg-[#F4F7FE]/20 transition-colors duration-150">
+                            <td class="py-4 pl-2 flex items-center gap-3">
+                                <!-- Miniatura Certificado -->
+                                <div class="h-9 w-9 rounded-lg bg-[#4318FF]/5 text-[#4318FF] flex items-center justify-center shrink-0">
+                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                                    </svg>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-bold text-[#1B254B]">Certificado SSL Wildcard</span>
+                                    <span class="text-[9px] text-[#A3AED0] font-semibold">Sectigo Let's Encrypt</span>
+                                </div>
+                            </td>
+                            <td class="py-4">
+                                <span class="text-xs font-bold text-[#1B254B]">*.nebulix.io</span>
+                            </td>
+                            <td class="py-4">
+                                <span class="text-xs font-bold text-[#1B254B]">$12.00 USD <span class="text-[9px] text-[#A3AED0] font-semibold">/año</span></span>
+                            </td>
+                            <td class="py-4">
+                                <span class="text-xs font-bold text-[#1B254B]">14 de Junio, 2027</span>
+                            </td>
+                            <td class="py-4 pr-2 text-right">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-50 text-emerald-500">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                    Activo
+                                </span>
+                            </td>
+                        </tr>
+
+                        <!-- Fila 4: Professional Email -->
+                        <tr class="hover:bg-[#F4F7FE]/20 transition-colors duration-150">
+                            <td class="py-4 pl-2 flex items-center gap-3">
+                                <!-- Miniatura Correo -->
+                                <div class="h-9 w-9 rounded-lg bg-[#4318FF]/5 text-[#4318FF] flex items-center justify-center shrink-0">
+                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                    </svg>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-bold text-[#1B254B]">Correo Profesional</span>
+                                    <span class="text-[9px] text-[#A3AED0] font-semibold">10 Buzones Personalizados</span>
+                                </div>
+                            </td>
+                            <td class="py-4">
+                                <span class="text-xs font-bold text-[#1B254B]">mail.nebulix.io</span>
+                            </td>
+                            <td class="py-4">
+                                <span class="text-xs font-bold text-[#1B254B]">$5.00 USD <span class="text-[9px] text-[#A3AED0] font-semibold">/mes</span></span>
+                            </td>
+                            <td class="py-4">
+                                <span class="text-xs font-bold text-[#1B254B]">10 de Julio, 2026</span>
+                            </td>
+                            <td class="py-4 pr-2 text-right">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-50 text-amber-500">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                                    Pendiente
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <!-- Contenedor Responsive para Tabla -->
-        <div class="overflow-x-auto">
-            <table class="w-full min-w-[600px] border-collapse">
-                <thead>
-                    <tr class="border-b border-[#F4F7FE] text-left">
-                        <th class="text-[10px] font-bold text-[#A3AED0] uppercase tracking-wider pb-3 pl-2">Servicio</th>
-                        <th class="text-[10px] font-bold text-[#A3AED0] uppercase tracking-wider pb-3">Dominio</th>
-                        <th class="text-[10px] font-bold text-[#A3AED0] uppercase tracking-wider pb-3">Precio</th>
-                        <th class="text-[10px] font-bold text-[#A3AED0] uppercase tracking-wider pb-3">Próximo Pago</th>
-                        <th class="text-[10px] font-bold text-[#A3AED0] uppercase tracking-wider pb-3 pr-2 text-right">Estado</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-[#F4F7FE] align-middle">
-                    <!-- Fila 1: Cloud Hosting -->
-                    <tr class="hover:bg-[#F4F7FE]/20 transition-colors duration-150">
-                        <td class="py-4 pl-2 flex items-center gap-3">
-                            <!-- Miniatura Icono de Nube/Servicio -->
-                            <div class="h-9 w-9 rounded-lg bg-[#4318FF]/5 text-[#4318FF] flex items-center justify-center shrink-0">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3V7.5a3 3 0 013-3h13.5a3 3 0 013 3v3.75a3 3 0 01-3 3zm-13.5 0v3.75a3 3 0 003 3h13.5a3 3 0 003-3v-3.75m-16.5-3h16.5" />
-                                </svg>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-xs font-bold text-[#1B254B]">Cloud VPS Premium</span>
-                                <span class="text-[9px] text-[#A3AED0] font-semibold">2 vCPU / 4 GB RAM</span>
-                            </div>
-                        </td>
-                        <td class="py-4">
-                            <span class="text-xs font-bold text-[#1B254B]">nebulix.io</span>
-                        </td>
-                        <td class="py-4">
-                            <span class="text-xs font-bold text-[#1B254B]">$29.00 USD <span class="text-[9px] text-[#A3AED0] font-semibold">/mes</span></span>
-                        </td>
-                        <td class="py-4">
-                            <span class="text-xs font-bold text-[#1B254B]">28 de Julio, 2026</span>
-                        </td>
-                        <td class="py-4 pr-2 text-right">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-50 text-emerald-500">
-                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                Activo
-                            </span>
-                        </td>
-                    </tr>
+        <!-- Tarjeta de Anuncios -->
+        <div class="lg:col-span-1 bg-white rounded-[20px] p-6 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50 flex flex-col justify-between transition-all hover:scale-[1.01] duration-200">
+            <!-- Encabezado de Anuncios -->
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex flex-col">
+                        <h3 class="text-lg font-extrabold text-[#1B254B] tracking-tight">Anuncios</h3>
+                        <span class="text-[10px] text-[#A3AED0] font-bold mt-0.5">Últimas novedades y avisos importantes</span>
+                    </div>
+                    <!-- Icono Campana con Punto de Notificación -->
+                    <div class="relative h-9 w-9 rounded-xl bg-[#F4F7FE] text-[#4318FF] flex items-center justify-center shrink-0">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                        </svg>
+                        <span class="absolute top-2 right-2.5 h-2.5 w-2.5 rounded-full bg-red-500 border border-white ring-2 ring-white animate-pulse"></span>
+                    </div>
+                </div>
 
-                    <!-- Fila 2: Database -->
-                    <tr class="hover:bg-[#F4F7FE]/20 transition-colors duration-150">
-                        <td class="py-4 pl-2 flex items-center gap-3">
-                            <!-- Miniatura DB -->
-                            <div class="h-9 w-9 rounded-lg bg-[#4318FF]/5 text-[#4318FF] flex items-center justify-center shrink-0">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75" />
-                                </svg>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-xs font-bold text-[#1B254B]">Base de Datos Dedicada</span>
-                                <span class="text-[9px] text-[#A3AED0] font-semibold">PostgreSQL v16</span>
-                            </div>
-                        </td>
-                        <td class="py-4">
-                            <span class="text-xs font-bold text-[#1B254B]">db.nebulix.io</span>
-                        </td>
-                        <td class="py-4">
-                            <span class="text-xs font-bold text-[#1B254B]">$89.00 USD <span class="text-[9px] text-[#A3AED0] font-semibold">/mes</span></span>
-                        </td>
-                        <td class="py-4">
-                            <span class="text-xs font-bold text-[#1B254B]">02 de Agosto, 2026</span>
-                        </td>
-                        <td class="py-4 pr-2 text-right">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-50 text-emerald-500">
-                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                Activo
-                            </span>
-                        </td>
-                    </tr>
+                <!-- Banner Destacado (Promo) -->
+                <div class="bg-gradient-to-br from-[#868CFF] via-[#5C5CFF] to-[#4318FF] rounded-[16px] p-4 text-white relative overflow-hidden mb-5 select-none transition-all duration-300 hover:shadow-[0px_10px_35px_rgba(67,24,255,0.25)] group/banner">
+                    <!-- Figma-style overlay glow -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform skew-y-12 transition-transform duration-700 group-hover/banner:translate-x-full"></div>
+                    
+                    <div class="relative z-10 flex flex-col justify-between h-full">
+                        <div>
+                            <span class="inline-block text-[8px] font-extrabold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-md mb-2">¡Descuento Exclusivo! 🚀</span>
+                            <h4 class="text-xs font-black leading-snug">Duplica tus recursos en Servidores Cloud GPU con 50% de descuento</h4>
+                        </div>
+                        <a href="#" class="mt-3 inline-flex items-center gap-1 text-[9px] font-extrabold hover:underline">
+                            <span>Adquirir ahora</span>
+                            <svg class="h-2.5 w-2.5 transform group-hover/banner:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
 
-                    <!-- Fila 3: SSL Certificate -->
-                    <tr class="hover:bg-[#F4F7FE]/20 transition-colors duration-150">
-                        <td class="py-4 pl-2 flex items-center gap-3">
-                            <!-- Miniatura Certificado -->
-                            <div class="h-9 w-9 rounded-lg bg-[#4318FF]/5 text-[#4318FF] flex items-center justify-center shrink-0">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                                </svg>
+                <!-- Lista de Anuncios Recientes -->
+                <div class="space-y-4">
+                    <!-- Anuncio 1: Mantenimiento -->
+                    <div class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150">
+                        <div class="h-8 w-8 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+                            <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col min-w-0">
+                            <div class="flex items-center gap-2 mb-0.5">
+                                <span class="text-[8px] font-extrabold uppercase tracking-wider text-amber-500 bg-amber-50 px-1.5 py-0.5 rounded-md">Mantenimiento</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold">05 de Julio</span>
                             </div>
-                            <div class="flex flex-col">
-                                <span class="text-xs font-bold text-[#1B254B]">Certificado SSL Wildcard</span>
-                                <span class="text-[9px] text-[#A3AED0] font-semibold">Sectigo Let's Encrypt</span>
-                            </div>
-                        </td>
-                        <td class="py-4">
-                            <span class="text-xs font-bold text-[#1B254B]">*.nebulix.io</span>
-                        </td>
-                        <td class="py-4">
-                            <span class="text-xs font-bold text-[#1B254B]">$12.00 USD <span class="text-[9px] text-[#A3AED0] font-semibold">/año</span></span>
-                        </td>
-                        <td class="py-4">
-                            <span class="text-xs font-bold text-[#1B254B]">14 de Junio, 2027</span>
-                        </td>
-                        <td class="py-4 pr-2 text-right">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-50 text-emerald-500">
-                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                Activo
-                            </span>
-                        </td>
-                    </tr>
+                            <span class="text-xs font-bold text-[#1B254B] truncate">Nodo VPS-04 US-East (Virginia)</span>
+                            <span class="text-[10px] text-[#A3AED0] font-semibold truncate mt-0.5">Mantenimiento programado de 02:00 a 04:00 UTC.</span>
+                        </div>
+                    </div>
 
-                    <!-- Fila 4: Professional Email -->
-                    <tr class="hover:bg-[#F4F7FE]/20 transition-colors duration-150">
-                        <td class="py-4 pl-2 flex items-center gap-3">
-                            <!-- Miniatura Correo -->
-                            <div class="h-9 w-9 rounded-lg bg-[#4318FF]/5 text-[#4318FF] flex items-center justify-center shrink-0">
+                    <!-- Anuncio 2: Nueva Región -->
+                    <div class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150">
+                        <div class="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                            <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col min-w-0">
+                            <div class="flex items-center gap-2 mb-0.5">
+                                <span class="text-[8px] font-extrabold uppercase tracking-wider text-emerald-500 bg-emerald-50 px-1.5 py-0.5 rounded-md">Lanzamiento</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold">28 de Junio</span>
+                            </div>
+                            <span class="text-xs font-bold text-[#1B254B] truncate">Nueva Región: España (Madrid)</span>
+                            <span class="text-[10px] text-[#A3AED0] font-semibold truncate mt-0.5">Despliega tus servidores ahora con latencia mínima.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FASE 7: Facturas y Tickets de Soporte -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Tarjeta de Facturas -->
+        <div class="bg-white rounded-[20px] p-6 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50 flex flex-col justify-between transition-all hover:scale-[1.01] duration-200 min-h-[380px]">
+            <div>
+                <!-- Encabezado de Facturas -->
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex flex-col">
+                        <h3 class="text-lg font-extrabold text-[#1B254B] tracking-tight">Facturas Recientes</h3>
+                        <span class="text-[10px] text-[#A3AED0] font-bold mt-0.5">Control de pagos y transacciones pendientes</span>
+                    </div>
+                    <!-- Icono Factura -->
+                    <div class="h-9 w-9 rounded-xl bg-[#F4F7FE] text-[#4318FF] flex items-center justify-center shrink-0">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Lista de Facturas -->
+                <div class="space-y-4">
+                    <!-- Factura 1: Vencida -->
+                    <div class="flex items-center justify-between p-3.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="h-9 w-9 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                                 </svg>
                             </div>
-                            <div class="flex flex-col">
-                                <span class="text-xs font-bold text-[#1B254B]">Correo Profesional</span>
-                                <span class="text-[9px] text-[#A3AED0] font-semibold">10 Buzones Personalizados</span>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-xs font-bold text-[#1B254B]">Factura #INV-2091</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Vence: 05 de Julio, 2026</span>
                             </div>
-                        </td>
-                        <td class="py-4">
-                            <span class="text-xs font-bold text-[#1B254B]">mail.nebulix.io</span>
-                        </td>
-                        <td class="py-4">
-                            <span class="text-xs font-bold text-[#1B254B]">$5.00 USD <span class="text-[9px] text-[#A3AED0] font-semibold">/mes</span></span>
-                        </td>
-                        <td class="py-4">
-                            <span class="text-xs font-bold text-[#1B254B]">10 de Julio, 2026</span>
-                        </td>
-                        <td class="py-4 pr-2 text-right">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-50 text-amber-500">
-                                <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
-                                Pendiente
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-black text-[#1B254B]">$29.00 USD</span>
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-extrabold bg-red-50 text-red-500 select-none">
+                                Vencida
                             </span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </div>
+                    </div>
+
+                    <!-- Factura 2: Pagada -->
+                    <div class="flex items-center justify-between p-3.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="h-9 w-9 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-xs font-bold text-[#1B254B]">Factura #INV-2090</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Pagada: 28 de Junio, 2026</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-black text-[#1B254B]">$89.00 USD</span>
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-extrabold bg-emerald-50 text-emerald-500 select-none">
+                                Pagada
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Factura 3: Pagada -->
+                    <div class="flex items-center justify-between p-3.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="h-9 w-9 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-xs font-bold text-[#1B254B]">Factura #INV-2089</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Pagada: 14 de Junio, 2026</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-black text-[#1B254B]">$12.00 USD</span>
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-extrabold bg-emerald-50 text-emerald-500 select-none">
+                                Pagada
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón Ver Todos -->
+            <a href="#" class="mt-6 flex items-center justify-center gap-2 bg-[#F4F7FE] hover:bg-[#E0E5F2] text-xs font-extrabold text-[#4318FF] py-3.5 px-4 rounded-xl border border-[#E0E5F2] transition-all group duration-200">
+                <span>Ver todas las facturas</span>
+                <svg class="h-3.5 w-3.5 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+            </a>
+        </div>
+
+        <!-- Tarjeta de Tickets de Soporte -->
+        <div class="bg-white rounded-[20px] p-6 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50 flex flex-col justify-between transition-all hover:scale-[1.01] duration-200 min-h-[380px]">
+            <div>
+                <!-- Encabezado de Tickets -->
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex flex-col">
+                        <h3 class="text-lg font-extrabold text-[#1B254B] tracking-tight">Tickets de Soporte</h3>
+                        <span class="text-[10px] text-[#A3AED0] font-bold mt-0.5">Estado de tus consultas técnicas activas</span>
+                    </div>
+                    <!-- Icono Soporte -->
+                    <div class="h-9 w-9 rounded-xl bg-[#F4F7FE] text-[#4318FF] flex items-center justify-center shrink-0">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a.75.75 0 01-1.074-.765 6.002 6.002 0 011.164-3.41C4.412 15.357 3.75 13.748 3.75 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Lista de Tickets -->
+                <div class="space-y-4">
+                    <!-- Ticket 1: Abierto -->
+                    <div class="flex items-center justify-between p-3.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="h-9 w-9 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-xs font-bold text-[#1B254B] truncate">Error de conexión en Base de Datos Postgres</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">ID: #TK-4921 • Actualizado hace 15m</span>
+                            </div>
+                        </div>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-extrabold bg-amber-50 text-amber-500 select-none shrink-0">
+                            En Proceso
+                        </span>
+                    </div>
+
+                    <!-- Ticket 2: Respondido -->
+                    <div class="flex items-center justify-between p-3.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="h-9 w-9 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-2.503a8.01 8.01 0 001.88-.188c1.853-.5 3.26-2.09 3.26-4.004V8.585c0-1.925-1.4-3.513-3.26-4.01a14.963 14.963 0 00-7.06 0C4.9 5.072 3.5 6.66 3.5 8.586v4.174z" />
+                                </svg>
+                            </div>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-xs font-bold text-[#1B254B] truncate">Consulta sobre ampliación de disco</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">ID: #TK-4819 • Actualizado hace 2h</span>
+                            </div>
+                        </div>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-extrabold bg-[#4318FF]/5 text-[#4318FF] select-none shrink-0">
+                            Respondido
+                        </span>
+                    </div>
+
+                    <!-- Ticket 3: Cerrado -->
+                    <div class="flex items-center justify-between p-3.5 rounded-xl hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="h-9 w-9 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-xs font-bold text-[#1B254B] truncate">Instalación de SSL Wildcard en nebulix.io</span>
+                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">ID: #TK-4752 • Cerrado hace 1d</span>
+                            </div>
+                        </div>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-extrabold bg-slate-100 text-slate-500 select-none shrink-0">
+                            Cerrado
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                <a href="#" class="flex-1 flex items-center justify-center gap-2 bg-[#F4F7FE] hover:bg-[#E0E5F2] text-xs font-extrabold text-[#4318FF] py-3.5 px-4 rounded-xl border border-[#E0E5F2] transition-all group duration-200">
+                    <span>Ver todos</span>
+                </a>
+                <a href="#" class="flex-1 flex items-center justify-center gap-2 bg-[#4318FF] hover:bg-[#3b15e0] active:scale-95 text-white text-xs font-extrabold py-3.5 px-4 rounded-xl transition-all shadow-[0px_10px_20px_rgba(67,24,255,0.15)] duration-200">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    <span>Nuevo Ticket</span>
+                </a>
+            </div>
         </div>
     </div>
 </div>

@@ -3,7 +3,7 @@
     <div class="flex flex-col lg:flex-row lg:items-center gap-6">
         <div class="flex flex-col">
             <h1 class="text-3xl font-extrabold text-[#1B254B] tracking-tight mt-1 leading-tight">
-                Bienvenido, {{ Auth::user()->name }}!
+                Bienvenido, {{ Auth::user()->name }}! ✌️
             </h1>
             <p class="text-xs font-semibold text-[#A3AED0] mt-1">
                 Esto es lo que está sucediendo con tu cuenta hoy.
