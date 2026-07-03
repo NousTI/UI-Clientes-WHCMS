@@ -21,6 +21,8 @@
                 </div>
             </div>
         </div>
+        <div>            
+        </div>
 
         @persist('toast')
             <flux:toast.group>

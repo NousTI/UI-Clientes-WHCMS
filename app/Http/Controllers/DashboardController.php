@@ -23,4 +23,9 @@ class DashboardController extends Controller
     {
         return view('dashboard.invoices');
     }
+
+    public function tickets()
+    {
+        return view('dashboard.tickets');
+    }
 }

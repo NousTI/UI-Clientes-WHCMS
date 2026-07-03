@@ -77,12 +77,13 @@
 
                 <!-- Tickets de Soporte -->
                 <div class="px-4">
-                    <a href="#" 
-                       class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-150 rounded-xl text-[#A3AED0] hover:text-[#1B254B] hover:bg-[#F4F7FE]/50">
-                        <svg class="h-5 w-5 mr-3 shrink-0 text-[#A3AED0] group-hover:text-[#1B254B] transition-transform duration-150 group-hover:scale-105" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2zM12 11a3 3 0 100-6 3 3 0 000 6z" />
+                    <a href="{{ route('tickets') }}" 
+                       class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-150 rounded-xl {{ request()->routeIs('tickets') ? 'bg-[#4318FF] text-white shadow-[0px_10px_20px_rgba(67,24,255,0.15)]' : 'text-[#A3AED0] hover:text-[#1B254B] hover:bg-[#F4F7FE]/50' }}">
+                        <svg class="h-5 w-5 mr-3 shrink-0 {{ request()->routeIs('tickets') ? 'text-white' : 'text-[#A3AED0] group-hover:text-[#1B254B]' }} transition-transform duration-150 group-hover:scale-105" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
                         </svg>
                         <span>Tickets de Soporte</span>
+                        <span class="ml-auto inline-flex items-center justify-center h-4 min-w-4 px-1 rounded-full text-[8px] font-black {{ request()->routeIs('tickets') ? 'bg-white/25 text-white' : 'bg-red-500 text-white' }}">2</span>
                     </a>
                 </div>
             </div>
