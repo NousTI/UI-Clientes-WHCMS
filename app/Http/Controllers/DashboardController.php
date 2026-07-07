@@ -28,4 +28,9 @@ class DashboardController extends Controller
     {
         return view('dashboard.tickets');
     }
+
+    public function affiliates()
+    {
+        return view('dashboard.affiliates');
+    }
 }
