@@ -20,12 +20,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles / Scripts -->
+    <script>
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Estilos de soporte para evitar parpadeos de AlpineJS -->
     <style>
         [x-cloak] { display: none !important; }
     </style>
+    @livewireStyles
 </head>
 <body class="h-full bg-[#F4F7FE] dark:bg-[#0B0F19] font-['Plus_Jakarta_Sans',sans-serif] text-[#1B254B] dark:text-[#F4F7FE] antialiased transition-colors duration-200">
 
@@ -70,6 +78,7 @@
         </div>
     </div>
 
+    @livewireScripts
 </body>
 </html>
 

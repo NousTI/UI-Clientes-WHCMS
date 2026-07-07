@@ -347,7 +347,9 @@
                         </label>
                     </div>
                 </div>
-
+                <div>
+                    
+                </div>
                 <button class="w-full flex items-center justify-center gap-2 bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 text-white text-xs font-extrabold py-3 px-4 rounded-xl transition-all shadow-[0px_6px_20px_rgba(67,24,255,0.20)] cursor-pointer">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
                     Solicitar Retiro — $47.50

@@ -61,6 +61,266 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+/* ============================================================
+   NOUS — DESIGN TOKENS (Venus Dashboard)
+   Variables CSS que responden al modo oscuro globalmente.
+   Uso: var(--nous-surface), var(--nous-text), etc.
+   ============================================================ */
+
+:root {
+    /* Superficies */
+    --nous-page-bg:      #F4F7FE;
+    --nous-surface:      #FFFFFF;
+    --nous-surface-alt:  #F4F7FE;
+    --nous-surface-hover: #E8EDF6;
+    --nous-border:       #E2E8F0;
+
+    /* Texto */
+    --nous-text-primary:   #1B254B;
+    --nous-text-secondary: #A3AED0;
+
+    /* Navbar / Sidebar */
+    --nous-nav-bg:         #FFFFFF;
+    --nous-nav-pill:       rgba(244,247,254,0.8);
+    --nous-nav-pill-border: rgba(255,255,255,0.2);
+
+    /* Sidebar */
+    --nous-sidebar-bg:   #FFFFFF;
+    --nous-sidebar-border: #F4F7FE;
+
+    /* Cards */
+    --nous-card-shadow:  0px 18px 40px rgba(112,144,176,0.06);
+}
+
+/* Valores oscuros */
+.dark {
+    --nous-page-bg:      #0D1117;
+    --nous-surface:      #161B27;
+    --nous-surface-alt:  #1C2333;
+    --nous-surface-hover: #232E44;
+    --nous-border:       #2D3A55;
+
+    --nous-text-primary:   #E4EAF4;
+    --nous-text-secondary: #637BAE;
+
+    --nous-nav-bg:         #161B27;
+    --nous-nav-pill:       rgba(22,27,39,0.85);
+    --nous-nav-pill-border: rgba(67,24,255,0.25);
+
+    --nous-sidebar-bg:   #161B27;
+    --nous-sidebar-border: #1C2333;
+
+    --nous-card-shadow:  0px 18px 40px rgba(0,0,0,0.25);
+}
+
+/* ============================================================
+   APLICA TOKENS A ELEMENTOS GLOBALES
+   ============================================================ */
+
+body {
+    background-color: var(--nous-page-bg);
+    color: var(--nous-text-primary);
+    transition: background-color 0.25s ease, color 0.2s ease;
+}
+
+/* Sidebar */
+.nous-sidebar {
+    background-color: var(--nous-sidebar-bg);
+    border-color: var(--nous-sidebar-border);
+    transition: background-color 0.25s ease;
+}
+
+/* Navbar pill */
+.nous-nav-pill {
+    background-color: var(--nous-nav-pill);
+    border-color: var(--nous-nav-pill-border);
+    backdrop-filter: blur(12px);
+    transition: background-color 0.25s ease;
+}
+
+/* Cards genéricas */
+.nous-card {
+    background-color: var(--nous-surface);
+    border-color: var(--nous-border);
+    box-shadow: var(--nous-card-shadow);
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Superficies alternativas (inputs, badges de fondo, etc.) */
+.nous-surface-alt {
+    background-color: var(--nous-surface-alt);
+    transition: background-color 0.25s ease;
+}
+
+/* ============================================================
+   CLASES UTILITARIAS DARK-AWARE para Tailwind arbitrary values
+   ============================================================ */
+
+/* Texto primario */
+.nous-text-primary   { color: var(--nous-text-primary); }
+.nous-text-secondary { color: var(--nous-text-secondary); }
+
+/* Bordes */
+.nous-border { border-color: var(--nous-border); }
+
+/* Hover de elementos de lista/sidebar */
+.nous-hover-item:hover {
+    background-color: var(--nous-surface-hover);
+}
+
+/* Inputs / formularios */
+.nous-input {
+    background-color: var(--nous-surface-alt);
+    border-color: var(--nous-border);
+    color: var(--nous-text-primary);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.nous-input::placeholder {
+    color: var(--nous-text-secondary);
+}
+.nous-input:focus {
+    background-color: var(--nous-surface);
+    border-color: #4318FF;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(67,24,255,0.12);
+}
+
+/* Divisores */
+.nous-divider {
+    border-color: var(--nous-border);
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: var(--nous-border);
+    border-radius: 99px;
+}
+.dark ::-webkit-scrollbar-thumb { background: #2D3A55; }
+
+/* ============================================================
+   SIDEBAR / NAV interactive state utilities
+   ============================================================ */
+
+/* Estado inactivo — se adapta al tema */
+.nous-nav-inactive {
+    color: var(--nous-text-secondary);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+.nous-nav-inactive:hover {
+    background-color: var(--nous-surface-hover);
+    color: var(--nous-text-primary);
+}
+
+/* Icono en estado inactivo */
+.nous-nav-icon {
+    color: var(--nous-text-secondary);
+    transition: color 0.15s ease;
+}
+.nous-nav-inactive:hover .nous-nav-icon {
+    color: var(--nous-text-primary);
+}
+
+/* ============================================================
+   NAVBAR dark mode
+   ============================================================ */
+.nous-navbar-pill {
+    background-color: var(--nous-nav-pill);
+    border: 1px solid var(--nous-nav-pill-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.nous-navbar-search {
+    background-color: var(--nous-surface-alt);
+    color: var(--nous-text-primary);
+    transition: background-color 0.15s ease;
+}
+.nous-navbar-search::placeholder {
+    color: var(--nous-text-secondary);
+}
+.nous-navbar-search:focus {
+    background-color: var(--nous-surface);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(67,24,255,0.20);
+}
+
+.nous-navbar-icon-btn {
+    color: var(--nous-text-secondary);
+    border-radius: 9999px;
+    padding: 0.5rem;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+.nous-navbar-icon-btn:hover {
+    background-color: var(--nous-surface-hover);
+    color: var(--nous-text-primary);
+}
+
+/* Dropdowns del navbar */
+.nous-dropdown {
+    background-color: var(--nous-surface);
+    border-color: var(--nous-border);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    transition: background-color 0.2s ease;
+}
+.nous-dropdown-item {
+    color: var(--nous-text-secondary);
+    transition: background-color 0.12s ease, color 0.12s ease;
+}
+.nous-dropdown-item:hover {
+    background-color: var(--nous-surface-alt);
+    color: var(--nous-text-primary);
+}
+
+/* ============================================================
+   DARK MODE OVERRIDES FOR STATIC TAILWIND COLORS
+   ============================================================ */
+.dark .bg-white {
+    background-color: var(--nous-surface) !important;
+}
+.dark .bg-\[\#F4F7FE\] {
+    background-color: var(--nous-surface-alt) !important;
+}
+.dark .text-\[\#1B254B\] {
+    color: var(--nous-text-primary) !important;
+}
+.dark .text-\[\#A3AED0\] {
+    color: var(--nous-text-secondary) !important;
+}
+.dark .border-\[\#F4F7FE\] {
+    border-color: var(--nous-border) !important;
+}
+.dark .border-white\/50,
+.dark .border-white\/60,
+.dark .border-white\/20,
+.dark .border-\[\#F4F7FE\] {
+    border-color: var(--nous-border) !important;
+}
+
+/* Elementos de UI específicos de modo oscuro */
+.dark .bg-white\/70,
+.dark .bg-white\/80 {
+    background-color: rgba(22, 27, 39, 0.8) !important;
+}
+
+.dark .bg-\[\#F4F7FE\]\/50,
+.dark .bg-\[\#F4F7FE\]\/30 {
+    background-color: rgba(28, 35, 51, 0.4) !important;
+}
+
+.dark .divide-\[\#F4F7FE\] > * + * {
+    border-color: var(--nous-border) !important;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+    background-color: var(--nous-surface-alt) !important;
+    border-color: var(--nous-border) !important;
+    color: var(--nous-text-primary) !important;
+}
+.dark input::placeholder {
+    color: var(--nous-text-secondary) !important;
+}
