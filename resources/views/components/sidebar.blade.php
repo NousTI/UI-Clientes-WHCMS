@@ -3,7 +3,7 @@
     class="nous-sidebar fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r nous-border transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 shrink-0 shadow-sm"
     style="border-color: var(--nous-sidebar-border);"
 >
-    <!-- Cabecera / Logotipo (Estilo Venus Mockup) -->
+    <!-- Cabecera / Logotipo  -->
     <div class="flex h-20 shrink-0 items-center justify-between border-b px-6" style="border-color: var(--nous-sidebar-border);">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
             <!-- Icono Cuadrado Violeta-Azul -->
@@ -25,7 +25,7 @@
     <!-- Navegación -->
     <div class="flex-1 overflow-y-auto py-6 space-y-6">
         
-        <!-- Active / Passive Link: Client Area (Estilo Venus Solid Pill) -->
+        <!-- Active / Passive Link: Client Area -->
         <div class="px-4">
             <a href="{{ route('dashboard') }}" 
                class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-150 rounded-xl {{ request()->routeIs('dashboard') ? 'bg-[#4318FF] text-white shadow-[0px_10px_20px_rgba(67,24,255,0.15)]' : 'nous-nav-inactive' }}">
@@ -127,6 +127,46 @@
             </div>
         </div>
 
+    </div>
+    <div class="px-4 pb-4 shrink-0">
+        <!-- Tarjeta de Soporte del Robot (Estilo Premium Nous) -->
+        <div class="bg-gradient-to-br from-[#F4F7FE] to-[#E8EDF6] dark:from-[#111c44]/40 dark:to-[#111c44]/80 rounded-[24px] p-5 border border-white/60 dark:border-slate-800/80 shadow-[0px_18px_40px_rgba(112,144,176,0.04)] dark:shadow-[0px_18px_40px_rgba(0,0,0,0.15)] flex flex-col items-center text-center relative overflow-hidden group">
+            <!-- Figma-style glow overlay -->
+            <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 transform skew-y-12 transition-transform duration-750 group-hover:translate-x-full"></div>
+            
+            <!-- Robot 3D Illustration -->
+            <div class="relative w-full flex justify-center mb-1">
+                <img 
+                    src="{{ asset('assets/images/support_robot.png') }}" 
+                    alt="Robot de Soporte" 
+                    class="h-28 object-contain select-none transform transition-transform duration-500 group-hover:scale-105 group-hover:-translate-y-1"
+                />
+            </div>
+            
+            <!-- Text Content -->
+            <h4 class="text-xs font-extrabold text-[#1B254B] dark:text-white tracking-tight leading-none">
+                ¿Necesitas ayuda?
+            </h4>
+            <p class="text-[9px] font-bold text-[#A3AED0] dark:text-slate-400 mt-1.5 leading-none">
+                Soporte disponible 24/7
+                <br>
+                <span class="text-[8px] font-semibold text-emerald-500 flex items-center justify-center gap-1 mt-1">
+                    <span class="h-1 w-1 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Asistente en línea
+                </span>
+            </p>
+            
+            <!-- Contact Button -->
+            <a 
+                href="{{ route('tickets') }}" 
+                class="w-full border border-[#4318FF]/20 dark:border-[#868CFF]/20 text-[#4318FF] dark:text-[#868CFF] bg-white/40 dark:bg-[#111c44]/40 hover:bg-[#4318FF]/5 dark:hover:bg-[#868CFF]/5 font-bold text-[10px] py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 mt-3.5 hover:scale-[1.02] active:scale-95 transition-all duration-150 cursor-pointer"
+            >
+                <span>Contactar Soporte</span>
+                <svg class="h-3 w-3 transition-transform duration-150 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+                </svg>
+            </a>
+        </div>
     </div>
 
     <!-- Panel de Usuario Inferior / Log Out -->

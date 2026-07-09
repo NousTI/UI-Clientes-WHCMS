@@ -12,11 +12,6 @@
             <p class="text-xs font-semibold text-[#A3AED0] mt-1">Administra y renueva tu portafolio de dominios</p>
         </div>
         <div class="flex items-center gap-3">
-            <div class="flex items-center gap-2 text-[10px] font-bold text-[#A3AED0]">
-                <a href="{{ route('dashboard') }}" class="hover:text-[#4318FF] transition-colors">Inicio</a>
-                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
-                <span class="text-[#4318FF]">Dominios</span>
-            </div>
             <a href="#" class="relative inline-flex items-center gap-2 bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 text-white text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-[0px_6px_20px_rgba(67,24,255,0.25)] transition-all duration-150 overflow-hidden group">
                 <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
                 <svg class="h-4 w-4 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
@@ -112,6 +107,9 @@
                             <button class="h-8 w-8 rounded-lg text-[#A3AED0] hover:text-[#4318FF] hover:bg-white flex items-center justify-center transition-all cursor-pointer"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
                         </div>
                     </div>
+                    <div>
+                        
+                    </div>
 
                     {{-- acme-labs.com — ACTIVO --}}
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-[#F4F7FE]/50 border border-[#F4F7FE] hover:border-[#4318FF]/20 hover:bg-white transition-all duration-150">
@@ -158,30 +156,7 @@
                         <button class="h-8 w-8 rounded-lg text-[#A3AED0] hover:text-[#4318FF] hover:bg-[#F4F7FE] flex items-center justify-center transition-all cursor-pointer shrink-0"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
                     </div>
 
-                    {{-- acme.dev — ACTIVO --}}
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-[#F4F7FE]/50 border border-[#F4F7FE] hover:border-[#4318FF]/20 hover:bg-white transition-all duration-150">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-9 w-9 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253"/></svg>
-                            </div>
-                            <div class="min-w-0">
-                                <div class="flex flex-wrap items-center gap-1.5 mb-0.5">
-                                    <span class="text-xs font-extrabold text-[#1B254B]">acme.dev</span>
-                                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-extrabold uppercase bg-emerald-50 text-emerald-500"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>ACTIVO</span>
-                                    <span class="px-1.5 py-0.5 rounded text-[8px] font-extrabold uppercase bg-[#4318FF]/10 text-[#4318FF]">BLOQUEADO</span>
-                                    <span class="px-1.5 py-0.5 rounded text-[8px] font-extrabold uppercase bg-emerald-50 text-emerald-500">AUTO-RENOVAR</span>
-                                </div>
-                                <div class="flex gap-3 text-[10px] font-semibold text-[#A3AED0]">
-                                    <span>Vence: 05 Nov 2025</span>
-                                    <span>DNS Personalizado</span>
-                                    <span class="font-bold text-[#1B254B]">$19.99/año</span>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="h-8 w-8 rounded-lg text-[#A3AED0] hover:text-[#4318FF] hover:bg-[#F4F7FE] flex items-center justify-center transition-all cursor-pointer shrink-0"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
-                    </div>
-
-                    {{-- oldproject.net — EXPIRADO --}}
+                                        {{-- oldproject.net — EXPIRADO --}}
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-red-50/40 border border-red-100 hover:border-red-200 transition-all duration-150">
                         <div class="flex items-center gap-3 min-w-0">
                             <div class="h-9 w-9 rounded-lg bg-red-50 text-red-400 flex items-center justify-center shrink-0">
@@ -259,7 +234,9 @@
                     </a>
                 </div>
             </div>
-
+            <div>
+                
+            </div>
             {{-- Expiry Alert Card --}}
             <div class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-amber-200">
                 <div class="flex items-center gap-2 text-amber-500 mb-3">

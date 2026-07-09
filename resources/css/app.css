@@ -61,11 +61,7 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
-/* ============================================================
-   NOUS — DESIGN TOKENS (Venus Dashboard)
-   Variables CSS que responden al modo oscuro globalmente.
-   Uso: var(--nous-surface), var(--nous-text), etc.
-   ============================================================ */
+
 
 :root {
     /* Superficies */
@@ -113,10 +109,6 @@ select:focus[data-flux-control] {
     --nous-card-shadow:  0px 18px 40px rgba(0,0,0,0.25);
 }
 
-/* ============================================================
-   APLICA TOKENS A ELEMENTOS GLOBALES
-   ============================================================ */
-
 body {
     background-color: var(--nous-page-bg);
     color: var(--nous-text-primary);
@@ -151,10 +143,6 @@ body {
     background-color: var(--nous-surface-alt);
     transition: background-color 0.25s ease;
 }
-
-/* ============================================================
-   CLASES UTILITARIAS DARK-AWARE para Tailwind arbitrary values
-   ============================================================ */
 
 /* Texto primario */
 .nous-text-primary   { color: var(--nous-text-primary); }
@@ -199,9 +187,9 @@ body {
 }
 .dark ::-webkit-scrollbar-thumb { background: #2D3A55; }
 
-/* ============================================================
+/* 
    SIDEBAR / NAV interactive state utilities
-   ============================================================ */
+*/
 
 /* Estado inactivo — se adapta al tema */
 .nous-nav-inactive {
@@ -222,9 +210,7 @@ body {
     color: var(--nous-text-primary);
 }
 
-/* ============================================================
-   NAVBAR dark mode
-   ============================================================ */
+/* NAVBAR MODO OSCURO */
 .nous-navbar-pill {
     background-color: var(--nous-nav-pill);
     border: 1px solid var(--nous-nav-pill-border);
@@ -274,9 +260,7 @@ body {
     color: var(--nous-text-primary);
 }
 
-/* ============================================================
-   DARK MODE OVERRIDES FOR STATIC TAILWIND COLORS
-   ============================================================ */
+/* MODO OSCURO*/
 .dark .bg-white {
     background-color: var(--nous-surface) !important;
 }

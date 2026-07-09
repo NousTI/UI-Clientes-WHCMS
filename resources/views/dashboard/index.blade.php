@@ -4,72 +4,50 @@
 
 @section('content')
 <div class="space-y-4">
- 
-    <!-- Banner de Alerta de Pago Pendiente -->
-    <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="bg-gradient-to-r from-[#A31D1D] to-[#801616] rounded-[20px] p-4 text-white relative overflow-hidden shadow-[0px_18px_40px_rgba(163,29,29,0.12)] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none group/alert">
-        <!-- Figma-style overlay glow -->
-        <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform skew-y-12 transition-transform duration-750 group-hover/alert:translate-x-full"></div>
-        
-        <div class="relative z-10 flex items-center gap-3">
-            <!-- Icono Alerta / Exclamación -->
-            <div class="h-8 w-8 rounded-lg bg-white/10 text-white flex items-center justify-center shrink-0">
-                <svg class="h-5 w-5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                </svg>
-            </div>
-            <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                <span class="text-xs font-bold leading-tight text-white">Factura INV-2091 vencida hace 3 días — suspensión de servicio en 24h.</span>
-                <span class="text-xs font-medium leading-tight text-[#FFE680]">Dominio acme.io vence el 15 de Ene.</span>
-            </div>
-        </div>
-        
-        <div class="relative z-10 flex items-center gap-3 shrink-0 self-end sm:self-auto">
-            <!-- Botón Pay Now -->
-            <a href="#" class="bg-[#8AEF97] hover:bg-[#7AD887] active:scale-95 text-[#1B254B] text-[10px] font-extrabold py-2.5 px-4 rounded-xl transition-all shadow-sm shrink-0 flex items-center justify-center">
-                Pagar ahora
-            </a>
-            <!-- Botón Cerrar -->
-            <button @click="show = false" class="text-white/60 hover:text-white transition-colors cursor-pointer p-1 rounded-lg hover:bg-white/10 shrink-0" title="Cerrar aviso">
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-    </div>
 
     <!-- Rejilla de Tarjetas de Estadísticas  -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <!-- Services Card (Servicios) -->
-        <x-stat-card title="Servicios" value="3" subtext="3 Servicios Activos" illustration="assets/images/cloud-server-svgrepo-com.svg">
+        <div class="cursor-pointer" onclick="window.location.href='/services'">
+            <x-stat-card title="Servicios" value="3" subtext="3 Servicios Activos" illustration="assets/images/cloud-server-svgrepo-com.svg">
             <!-- Icono Cubo/Servicios -->
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
             </svg>
         </x-stat-card>
 
+         </div>
+        
         <!-- Invoices Due Card (Facturas Pendientes) -->
-        <x-stat-card title="Facturas Pendientes" value="1" subtext="1 Factura Pendiente" illustration="assets/images/bill-svgrepo-com.svg">
+         <div class="cursor-pointer" onclick="window.location.href='/invoices'">
+            <x-stat-card title="Facturas Pendientes" value="1" subtext="1 Factura Pendiente" illustration="assets/images/bill-svgrepo-com.svg">
             <!-- Icono Factura/Documento -->
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
             </svg>
         </x-stat-card>
+         </div>
+        
 
         <!-- Domains Card (Dominios) -->
+        <div class="cursor-pointer" onclick="window.location.href='/domains'">
         <x-stat-card title="Dominios" value="2" subtext="2 Dominios Registrados" illustration="assets/images/cloud-database-svgrepo-com.svg">
             <!-- Icono Globo -->
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253" />
             </svg>
         </x-stat-card>
+        </div>
 
         <!-- Support Tickets Card (Tickets de Soporte) -->
+         <div class="cursor-pointer" onclick="window.location.href='/tickets'">
         <x-stat-card title="Tickets de Soporte" value="3" subtext="3 Tickets Abiertos" illustration="assets/images/disk1-svgrepo-com.svg">
             <!-- Icono Auriculares/Soporte -->
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2zM12 11a3 3 0 100-6 3 3 0 000 6z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2zM12 11a3 3 0 100-6 3 3 0 000 6z"/>
             </svg>
         </x-stat-card>
+        </div>    
     </div>
 
     <!-- Servicios Activos y Anuncios -->

@@ -1,33 +1,26 @@
-<nav class="flex flex-col md:flex-row md:items-center justify-between gap-4 py-4 px-4 sm:px-6 lg:px-8 shrink-0">
-    <!-- Izquierda: Título de la Página (Estilo Venus) + Billetera al lado -->
+<nav class="relative z-20 flex flex-col md:flex-row md:items-center justify-between gap-4 py-4 px-4 sm:px-6 lg:px-8 shrink-0">
+    <!-- Izquierda: Título de la Página -->
     <div class="flex flex-col lg:flex-row lg:items-center gap-6">
         <div class="flex flex-col">
             <h1 class="text-3xl font-extrabold text-[#1B254B] tracking-tight mt-1 leading-tight">
-                Bienvenido, {{ Auth::user()->name }}! ✌️
+                Bienvenido, {{ Auth::user()->name }}!
             </h1>
             <p class="text-xs font-semibold text-[#A3AED0] mt-1">
                 Esto es lo que está sucediendo con tu cuenta hoy.
             </p>
         </div>
-
-        <!-- Tarjeta de Billetera (Credit Balance Style Figma en el Navbar) -->
+        
+        <!-- Tarjeta de Billetera -->
         <div class="bg-gradient-to-br from-[#7A5CFF] to-[#4318FF] rounded-[20px] p-4 text-white relative overflow-hidden flex flex-col justify-between w-64 h-24 shadow-[0px_10px_30px_rgba(112,144,176,0.12)] shrink-0 select-none">
-            <!-- Brillo diagonal de Figma -->
+            <!-- Brillo diagonal  -->
             <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform skew-x-12"></div>
             
             <!-- Contenido de la Billetera -->
             <div class="relative z-10 flex justify-between items-start">
                 <div class="flex flex-col">
-                    <span class="text-[9px] font-bold text-white/80 uppercase tracking-wider leading-none">Saldo de Crédito</span>
-                    <span class="text-xl font-black text-white mt-1 leading-none">$25,215</span>
+                    <span class="text-[9px] font-bold text-white/80 uppercase tracking-wider leading-none">Balance de Credito</span>
+                    <span class="text-xl font-black text-white mt-1 leading-none">$255.00</span>
                 </div>
-                
-                <!-- Botón de Tres Puntos -->
-                <button class="text-white hover:text-white/80 transition-colors cursor-pointer leading-none">
-                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M6 12a2 2 0 11-4 0 2 2 0 014 0zm8 0a2 2 0 11-4 0 2 2 0 014 0zm8 0a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                </button>
             </div>
             
             <!-- Gráfico de Ondulación Blanco-->
@@ -37,9 +30,10 @@
                 </svg>
             </div>
         </div>
+        
     </div>
 
-    <!-- Derecha: Panel de Control Flotante (Estilo Venus) -->
+    <!-- Derecha: Panel de Control Flotante-->
     <div class="flex items-center self-end md:self-center gap-3 nous-navbar-pill rounded-full shadow-lg p-2 shrink-0">
         <!-- Buscador integrado -->
         <div class="relative text-[#A3AED0] focus-within:text-[#1B254B]">
@@ -57,6 +51,8 @@
             </svg>
         </button>
 
+
+
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open" @click.outside="open = false" class="nous-navbar-icon-btn relative cursor-pointer">
                 <span class="sr-only">Notificaciones</span>
@@ -73,6 +69,8 @@
                 x-transition:leave="transition ease-in duration-75"
                 x-transition:leave-start="transform opacity-100 scale-100"
                 x-transition:leave-end="transform opacity-0 scale-95"
+                x-trasciocion:leave-end="trasnform opacity-0 scale-95"
+
                 class="nous-dropdown absolute right-0 mt-3 w-80 origin-top-right rounded-2xl p-4 border focus:outline-hidden z-50"
                 style="display: none;"
             >
@@ -83,7 +81,7 @@
                 <div class="space-y-3">
                     <!-- Notificación 1 -->
                     <div class="nous-dropdown-item flex items-start gap-3 p-2 rounded-xl cursor-pointer">
-                        <div class="h-8 w-8 rounded-lg bg-[#4318FF]/10 flex items-center justify-center text-xs shrink-0">📦</div>
+                        <div class="h-8 w-8 rounded-lg bg-[#4318FF]/10 flex items-center justify-center text-xs shrink-0"></div>
                         <div class="flex flex-col">
                             <span class="text-xs font-bold" style="color: var(--nous-text-primary)">Nuevo pedido recibido</span>
                             <span class="text-[10px] mt-0.5" style="color: var(--nous-text-secondary)">Hace 5 minutos</span>
@@ -91,7 +89,7 @@
                     </div>
                     <!-- Notificación 2 -->
                     <div class="nous-dropdown-item flex items-start gap-3 p-2 rounded-xl cursor-pointer">
-                        <div class="h-8 w-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-xs shrink-0">💵</div>
+                        <div class="h-8 w-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-xs shrink-0"></div>
                         <div class="flex flex-col">
                             <span class="text-xs font-bold" style="color: var(--nous-text-primary)">Pago de factura #1043 verificado</span>
                             <span class="text-[10px] mt-0.5" style="color: var(--nous-text-secondary)">Hace 1 hora</span>
@@ -109,53 +107,16 @@
         </button>
 
         <!-- Botón Dark/Light Mode -->
-        <button 
-            @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode ? 'true' : 'false')"
-            class="nous-navbar-icon-btn cursor-pointer" 
-            title="Cambiar Tema"
-        >
-            <!-- Icono Sol (visible en modo oscuro) -->
+        <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode ? 'true' : 'false')" class="nous-navbar-icon-btn cursor-pointer" title="Cambiar Tema">
+            <!-- Icono Sol -->
             <svg x-show="darkMode" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="display: none;">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14.5 12a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
             </svg>
-            <!-- Icono Luna (visible en modo claro) -->
+            <!-- Icono Luna -->
             <svg x-show="!darkMode" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
         </button>
 
-        <!-- Divisor vertical -->
-        <span class="h-6 w-px bg-slate-200" aria-hidden="true"></span>
-
-        <!-- Dropdown Usuario -->
-        <div x-data="{ open: false }" class="relative">
-            <button @click="open = !open" @click.outside="open = false" class="h-9 w-9 rounded-full bg-[#4318FF]/10 hover:bg-[#4318FF]/20 text-[#4318FF] font-black flex items-center justify-center text-xs shadow-xs cursor-pointer border border-[#4318FF]/10 transition-colors">
-                {{ auth()->check() ? strtoupper(substr(auth()->user()->name, 0, 2)) : 'UD' }}
-            </button>
-            <div 
-                x-show="open" 
-                x-transition:enter="transition ease-out duration-100"
-                x-transition:enter-start="transform opacity-0 scale-95"
-                x-transition:enter-end="transform opacity-100 scale-100"
-                x-transition:leave="transition ease-in duration-75"
-                x-transition:leave-start="transform opacity-100 scale-100"
-                x-transition:leave-end="transform opacity-0 scale-95"
-                class="nous-dropdown absolute right-0 mt-3 w-56 origin-top-right rounded-2xl p-2 border focus:outline-hidden z-50"
-                style="display: none;"
-            >
-                <div class="px-4 py-2.5 border-b mb-1" style="border-color: var(--nous-border);">
-                    <p class="text-[10px] font-bold uppercase tracking-wider" style="color: var(--nous-text-secondary)">Conectado como</p>
-                    <p class="text-sm font-bold truncate mt-0.5" style="color: var(--nous-text-primary)">{{ auth()->check() ? auth()->user()->name : 'Usuario Demo' }}</p>
-                </div>
-                <a href="#" class="nous-dropdown-item block px-4 py-2 text-xs font-bold rounded-xl">Mi Perfil</a>
-                <a href="#" class="nous-dropdown-item block px-4 py-2 text-xs font-bold rounded-xl">Ajustes</a>
-                <form method="POST" action="{{ route('logout') }}" class="w-full">
-                    @csrf
-                    <button type="submit" class="w-full text-left block px-4 py-2 text-xs font-bold text-red-500 hover:bg-red-50 rounded-xl transition-colors cursor-pointer">
-                        Cerrar Sesión
-                    </button>
-                </form>
-            </div>
-        </div>
     </div>
 </nav>

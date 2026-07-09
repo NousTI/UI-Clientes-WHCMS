@@ -190,32 +190,6 @@ new #[Title('Seguridad')] class extends Component {
             <h1 class="text-2xl font-extrabold text-[#1B254B] tracking-tight leading-tight">Seguridad</h1>
             <p class="text-xs font-semibold text-[#A3AED0] mt-1">Gestiona la seguridad y el acceso a tu cuenta</p>
         </div>
-        {{-- Breadcrumb --}}
-        <div class="flex items-center gap-2 text-[10px] font-bold text-[#A3AED0]">
-            <a href="{{ route('dashboard') }}" class="hover:text-[#4318FF] transition-colors">Inicio</a>
-            <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
-            </svg>
-            <span class="text-[#4318FF]">Seguridad</span>
-        </div>
-    </div>
-
-    {{-- ─── Settings Nav Tabs ────────────────────────────────────────── --}}
-    <div class="flex items-center gap-1 bg-white rounded-2xl p-1.5 shadow-[0px_4px_20px_rgba(112,144,176,0.08)] border border-white/50 w-fit">
-        <a href="{{ route('profile.edit') }}"
-           class="{{ request()->routeIs('profile.edit') ? 'bg-[#4318FF] text-white shadow-[0px_6px_16px_rgba(67,24,255,0.20)]' : 'text-[#A3AED0] hover:text-[#1B254B] hover:bg-[#F4F7FE]' }} flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-150">
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
-            </svg>
-            Perfil
-        </a>
-        <a href="{{ route('security.edit') }}"
-           class="{{ request()->routeIs('security.edit') ? 'bg-[#4318FF] text-white shadow-[0px_6px_16px_rgba(67,24,255,0.20)]' : 'text-[#A3AED0] hover:text-[#1B254B] hover:bg-[#F4F7FE]' }} flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-150">
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
-            </svg>
-            Seguridad
-        </a>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

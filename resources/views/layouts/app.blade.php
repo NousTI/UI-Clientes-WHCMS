@@ -65,6 +65,38 @@
 
             <!-- Content -->
             <main class="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
+                <!-- Banner de Alerta de Pago Pendiente -->
+                <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="mb-6 bg-gradient-to-r from-[#A31D1D] to-[#801616] rounded-[20px] p-4 text-white relative overflow-hidden shadow-[0px_18px_40px_rgba(163,29,29,0.12)] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none group/alert">
+                    <!-- Figma-style overlay glow -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform skew-y-12 transition-transform duration-750 group-hover/alert:translate-x-full"></div>
+                    
+                    <div class="relative z-10 flex items-center gap-3">
+                        <!-- Icono Alerta / Exclamación -->
+                        <div class="h-8 w-8 rounded-lg bg-white/10 text-white flex items-center justify-center shrink-0">
+                            <svg class="h-5 w-5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                            <span class="text-xs font-bold leading-tight text-white">Factura INV-2091 vencida hace 3 días — suspensión de servicio en 24h.</span>
+                            <span class="text-xs font-medium leading-tight text-[#FFE680]">Dominio acme.io vence el 15 de Ene.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="relative z-10 flex items-center gap-3 shrink-0 self-end sm:self-auto">
+                        <!-- Botón Pay Now -->
+                        <a href="/invoices" class="bg-[#8AEF97] hover:bg-[#7AD887] active:scale-95 text-[#1B254B] text-[10px] font-extrabold py-2.5 px-4 rounded-xl transition-all shadow-sm shrink-0 flex items-center justify-center">
+                            Pagar ahora
+                        </a>
+                        <!-- Botón Cerrar -->
+                        <button @click="show = false" class="text-white/60 hover:text-white transition-colors cursor-pointer p-1 rounded-lg hover:bg-white/10 shrink-0" title="Cerrar aviso">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
                 @hasSection('content')
                     @yield('content')
                 @else

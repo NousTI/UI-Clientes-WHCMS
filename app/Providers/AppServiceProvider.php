@@ -27,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
 
+        if (request()->header('X-Forwarded-Proto') === 'https') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         if (class_exists(Livewire::class)) {
             Livewire::addNamespace('settings', resource_path('views/settings'));
         }
