@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\Domain;
+use App\Models\Invoice;
+use App\Models\Service;
+use App\Models\Ticket;
 use App\Models\User;
 
 test('guests are redirected to the login page', function () {
@@ -13,4 +17,60 @@ test('authenticated users can visit the dashboard', function () {
 
     $response = $this->get(route('dashboard'));
     $response->assertOk();
+});
+
+test('authenticated users can visit the services page', function () {
+    $user = User::factory()->create();
+    Service::factory()->count(3)->create(['user_id' => $user->id]);
+
+    $this->actingAs($user);
+
+    $response = $this->get(route('services'));
+    $response->assertOk()
+        ->assertViewHas('services')
+        ->assertViewHas('servicesCount')
+        ->assertViewHas('activeServicesCount')
+        ->assertViewHas('suspendedServicesCount')
+        ->assertViewHas('monthlyCost');
+});
+
+test('authenticated users can visit the domains page', function () {
+    $user = User::factory()->create();
+    Domain::factory()->count(3)->create(['user_id' => $user->id]);
+
+    $this->actingAs($user);
+
+    $response = $this->get(route('domains'));
+    $response->assertOk()
+        ->assertViewHas('domains')
+        ->assertViewHas('domainsCount')
+        ->assertViewHas('activeDomainsCount');
+});
+
+test('authenticated users can visit the invoices page', function () {
+    $user = User::factory()->create();
+    Invoice::factory()->count(3)->create(['user_id' => $user->id]);
+
+    $this->actingAs($user);
+
+    $response = $this->get(route('invoices'));
+    $response->assertOk()
+        ->assertViewHas('invoices')
+        ->assertViewHas('invoicesCount')
+        ->assertViewHas('pendingInvoicesCount')
+        ->assertViewHas('totalPaidAmount')
+        ->assertViewHas('totalUnpaidAmount');
+});
+
+test('authenticated users can visit the tickets page', function () {
+    $user = User::factory()->create();
+    Ticket::factory()->count(3)->create(['user_id' => $user->id]);
+
+    $this->actingAs($user);
+
+    $response = $this->get(route('tickets'));
+    $response->assertOk()
+        ->assertViewHas('tickets')
+        ->assertViewHas('ticketsCount')
+        ->assertViewHas('openTicketsCount');
 });

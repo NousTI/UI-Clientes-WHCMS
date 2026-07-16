@@ -32,7 +32,7 @@
             </div>
         @endif
 
-        {{-- Form --}}
+        {{-- Form --}}  
         <form method="POST" action="{{ route('login.store') }}" class="space-y-5">
             @csrf
 
