@@ -3,7 +3,7 @@
 @section('title', 'Mis Servicios')
 
 @section('content')
-<div class="space-y-6">
+<div x-data="{ currentFilter: 'todos' }" class="space-y-6">
 
     {{-- ─── Page Header ────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -88,13 +88,37 @@
         <div class="lg:col-span-2 space-y-4">
 
             {{-- Filter Pills --}}
-            <div class="flex flex-wrap gap-2">
-                <button class="bg-[#4318FF] text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-[0px_4px_12px_rgba(67,24,255,0.20)] transition-all cursor-pointer">Todos</button>
-                <button class="bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30 px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">Activos</button>
-                <button class="bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30 px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">Suspendidos</button>
-                <button class="bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30 px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">VPS</button>
-                <button class="bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30 px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">Dedicados</button>
-                <button class="bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30 px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">Compartidos</button>
+            <div class="flex flex-wrap gap-2 select-none">
+                <button 
+                    @click="currentFilter = 'todos'"
+                    :class="currentFilter === 'todos' ? 'bg-[#4318FF] text-white shadow-[0px_4px_12px_rgba(67,24,255,0.20)]' : 'bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30'"
+                    class="px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border"
+                >Todos</button>
+                <button 
+                    @click="currentFilter = 'activos'"
+                    :class="currentFilter === 'activos' ? 'bg-[#4318FF] text-white shadow-[0px_4px_12px_rgba(67,24,255,0.20)]' : 'bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30'"
+                    class="px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border"
+                >Activos</button>
+                <button 
+                    @click="currentFilter = 'suspendidos'"
+                    :class="currentFilter === 'suspendidos' ? 'bg-[#4318FF] text-white shadow-[0px_4px_12px_rgba(67,24,255,0.20)]' : 'bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30'"
+                    class="px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border"
+                >Suspendidos</button>
+                <button 
+                    @click="currentFilter = 'vps'"
+                    :class="currentFilter === 'vps' ? 'bg-[#4318FF] text-white shadow-[0px_4px_12px_rgba(67,24,255,0.20)]' : 'bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30'"
+                    class="px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border"
+                >VPS</button>
+                <button 
+                    @click="currentFilter = 'dedicados'"
+                    :class="currentFilter === 'dedicados' ? 'bg-[#4318FF] text-white shadow-[0px_4px_12px_rgba(67,24,255,0.20)]' : 'bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30'"
+                    class="px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border"
+                >Dedicados</button>
+                <button 
+                    @click="currentFilter = 'compartidos'"
+                    :class="currentFilter === 'compartidos' ? 'bg-[#4318FF] text-white shadow-[0px_4px_12px_rgba(67,24,255,0.20)]' : 'bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30'"
+                    class="px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border"
+                >Compartidos</button>
             </div>
 
             @forelse ($services as $service)
@@ -120,7 +144,16 @@
                         default => 'text-emerald-500',
                     };
                 @endphp
-                <div class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border {{ $service->status === 'suspended' ? 'border-red-100/60' : 'border-white/50' }} hover:border-[#4318FF]/20 transition-all duration-200 hover:shadow-[0px_18px_40px_rgba(67,24,255,0.08)]">
+                <div 
+                    x-show="currentFilter === 'todos' || 
+                           (currentFilter === 'activos' && '{{ $service->status }}' === 'active') || 
+                           (currentFilter === 'suspendidos' && '{{ $service->status }}' === 'suspended') || 
+                           (currentFilter === 'vps' && '{{ $service->type }}' === 'vps') || 
+                           (currentFilter === 'dedicados' && '{{ $service->type }}' === 'dedicado') || 
+                           (currentFilter === 'compartidos' && '{{ $service->type }}' === 'compartido')"
+                    class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border {{ $service->status === 'suspended' ? 'border-red-100/60' : 'border-white/50' }} hover:border-[#4318FF]/20 transition-all duration-200 hover:shadow-[0px_18px_40px_rgba(67,24,255,0.08)]"
+                    x-transition
+                >
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div class="flex items-center gap-4 min-w-0 w-full">
                             <div class="h-11 w-11 rounded-xl {{ $iconColorClass }} flex items-center justify-center shrink-0">
@@ -222,7 +255,7 @@
                     </div>
                 </div>
             </div>
-
+            
             {{-- Alert CPU Card --}}
             @if ($maxCpuService && $maxCpuService->cpu_usage >= 80)
                 <div class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-red-100/80">
@@ -248,3 +281,4 @@
     </div>
 </div>
 @endsection
+

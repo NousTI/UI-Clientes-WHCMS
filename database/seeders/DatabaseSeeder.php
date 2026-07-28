@@ -177,6 +177,79 @@ class DatabaseSeeder extends Seeder
             'is_agent' => true,
         ]);
 
+        // Seed referrals for the test user to match mockup totals
+        \App\Models\Referral::factory()->create([
+            'user_id' => $testUser->id,
+            'referred_name' => 'María Castro',
+            'registered_at' => '2026-06-15',
+            'status' => 'active',
+            'commission_rate' => 20.00,
+            'total_earned' => 47.60,
+        ]);
+
+        \App\Models\Referral::factory()->create([
+            'user_id' => $testUser->id,
+            'referred_name' => 'Jorge Ramírez',
+            'registered_at' => '2026-06-02',
+            'status' => 'active',
+            'commission_rate' => 20.00,
+            'total_earned' => 32.40,
+        ]);
+
+        \App\Models\Referral::factory()->create([
+            'user_id' => $testUser->id,
+            'referred_name' => 'Luisa García',
+            'registered_at' => '2026-05-20',
+            'status' => 'pending',
+            'commission_rate' => 20.00,
+            'total_earned' => 0.00,
+        ]);
+
+        \App\Models\Referral::factory()->create([
+            'user_id' => $testUser->id,
+            'referred_name' => 'Andrés Pérez',
+            'registered_at' => '2026-05-10',
+            'status' => 'active',
+            'commission_rate' => 20.00,
+            'total_earned' => 58.20,
+        ]);
+
+        \App\Models\Referral::factory()->create([
+            'user_id' => $testUser->id,
+            'referred_name' => 'Sofía López',
+            'registered_at' => '2026-04-02',
+            'status' => 'active',
+            'commission_rate' => 20.00,
+            'total_earned' => 43.80,
+        ]);
+
+        \App\Models\Referral::factory()->create([
+            'user_id' => $testUser->id,
+            'referred_name' => 'Carlos Ruiz',
+            'registered_at' => '2026-03-15',
+            'status' => 'active',
+            'commission_rate' => 20.00,
+            'total_earned' => 28.00,
+        ]);
+
+        \App\Models\Referral::factory()->create([
+            'user_id' => $testUser->id,
+            'referred_name' => 'Ana Gómez',
+            'registered_at' => '2026-02-10',
+            'status' => 'pending',
+            'commission_rate' => 20.00,
+            'total_earned' => 0.00,
+        ]);
+
+        \App\Models\Referral::factory()->create([
+            'user_id' => $testUser->id,
+            'referred_name' => 'Pedro Díaz',
+            'registered_at' => '2026-01-05',
+            'status' => 'pending',
+            'commission_rate' => 20.00,
+            'total_earned' => 0.00,
+        ]);
+
         // Create some random data for other users as well
         User::factory(5)->create()->each(function ($user) {
             Service::factory(rand(1, 3))->create(['user_id' => $user->id]);
@@ -184,6 +257,7 @@ class DatabaseSeeder extends Seeder
             Invoice::factory(rand(1, 4))->create(['user_id' => $user->id]);
             $ticket = Ticket::factory()->create(['user_id' => $user->id]);
             TicketMessage::factory(rand(1, 3))->create(['ticket_id' => $ticket->id, 'user_id' => $user->id]);
+            \App\Models\Referral::factory(rand(1, 5))->create(['user_id' => $user->id]);
         });
     }
 }

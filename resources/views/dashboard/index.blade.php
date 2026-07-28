@@ -60,12 +60,6 @@
                     <h3 class="text-lg font-extrabold text-[#1B254B] tracking-tight">Servicios Activos</h3>
                     <span class="text-[10px] text-[#A3AED0] font-bold mt-0.5">Lista de servicios activos asociados a tu cuenta</span>
                 </div>
-                <!-- Botón de Opciones (Venus Style) -->
-                <button class="h-9 w-9 rounded-xl bg-[#F4F7FE] text-[#4318FF] hover:bg-[#E0E5F2] transition-colors flex items-center justify-center cursor-pointer" title="Ver todos los servicios">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                    </svg>
-                </button>
             </div>
 
             <!-- Contenedor Responsive para Tabla -->
@@ -150,13 +144,6 @@
                         <h3 class="text-lg font-extrabold text-[#1B254B] tracking-tight">Anuncios</h3>
                         <span class="text-[10px] text-[#A3AED0] font-bold mt-0.5">Últimas novedades y avisos importantes</span>
                     </div>
-                    <!-- Icono Campana con Punto de Notificación -->
-                    <div class="relative h-9 w-9 rounded-xl bg-[#F4F7FE] text-[#4318FF] flex items-center justify-center shrink-0">
-                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                        </svg>
-                        <span class="absolute top-2 right-2.5 h-2.5 w-2.5 rounded-full bg-red-500 border border-white ring-2 ring-white animate-pulse"></span>
-                    </div>
                 </div>
 
                 <!-- Banner Destacado (Promo) -->
@@ -169,7 +156,7 @@
                             <span class="inline-block text-[8px] font-extrabold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-md mb-2">¡Descuento Exclusivo! 🚀</span>
                             <h4 class="text-xs font-black leading-snug">Duplica tus recursos en Servidores Cloud GPU con 50% de descuento</h4>
                         </div>
-                        <a href="#" class="mt-3 inline-flex items-center gap-1 text-[9px] font-extrabold hover:underline">
+                        <a href="#"onclick="window.location.href='/tickets' class="mt-3 inline-flex items-center gap-1 text-[9px] font-extrabold hover:underline">
                             <span>Adquirir ahora</span>
                             <svg class="h-2.5 w-2.5 transform group-hover/banner:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -240,73 +227,70 @@
 
                 <!-- Lista de Facturas -->
                 <div class="space-y-2.5">
-                    <!-- Factura 1: Vencida -->
-                    <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-8 w-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
-                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                                </svg>
+                    @forelse ($recentInvoices as $invoice)
+                        @php
+                            $isPaid = $invoice->status === 'paid';
+                            $isOverdue = $invoice->status === 'unpaid' && $invoice->due_at->isPast();
+                        @endphp
+                        <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                            <div class="flex items-center gap-3 min-w-0">
+                                @if ($isPaid)
+                                    <div class="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                                        <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                @elseif ($isOverdue)
+                                    <div class="h-8 w-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+                                        <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                        </svg>
+                                    </div>
+                                @else
+                                    <div class="h-8 w-8 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+                                        <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                        </svg>
+                                    </div>
+                                @endif
+                                <div class="flex flex-col min-w-0 font-sans">
+                                    <span class="text-xs font-bold text-[#1B254B]">Factura {{ $invoice->invoice_number }}</span>
+                                    @if ($isPaid)
+                                        <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Pagada: {{ $invoice->paid_at ? $invoice->paid_at->format('d M, Y') : '' }}</span>
+                                    @elseif ($isOverdue)
+                                        <span class="text-[9px] text-red-500 font-bold mt-0.5">Venció: {{ $invoice->due_at->format('d M, Y') }}</span>
+                                    @else
+                                        <span class="text-[9px] text-amber-500 font-bold mt-0.5">Vence: {{ $invoice->due_at->format('d M, Y') }}</span>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="flex flex-col min-w-0">
-                                <span class="text-xs font-bold text-[#1B254B]">Factura #INV-2091</span>
-                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Vence: 05 Jul, 2026</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-black text-[#1B254B]">${{ number_format($invoice->amount, 2) }} USD</span>
+                                @if ($isPaid)
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-emerald-50 text-emerald-500 select-none">
+                                        Pagada
+                                    </span>
+                                @elseif ($isOverdue)
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-red-50 text-red-500 select-none">
+                                        Vencida
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-amber-50 text-amber-500 select-none">
+                                        Pendiente
+                                    </span>
+                                @endif
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-black text-[#1B254B]">$29.00 USD</span>
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-red-50 text-red-500 select-none">
-                                Vencida
-                            </span>
+                    @empty
+                        <div class="py-6 text-center text-xs font-bold text-[#A3AED0]">
+                            No tienes facturas recientes.
                         </div>
-                    </div>
-
-                    <!-- Factura 2: Pagada -->
-                    <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div class="flex flex-col min-w-0">
-                                <span class="text-xs font-bold text-[#1B254B]">Factura #INV-2090</span>
-                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Pagada: 28 Jun, 2026</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-black text-[#1B254B]">$89.00 USD</span>
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-emerald-50 text-emerald-500 select-none">
-                                Pagada
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Factura 3: Pagada -->
-                    <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div class="flex flex-col min-w-0">
-                                <span class="text-xs font-bold text-[#1B254B]">Factura #INV-2089</span>
-                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">Pagada: 14 Jun, 2026</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-black text-[#1B254B]">$12.00 USD</span>
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-emerald-50 text-emerald-500 select-none">
-                                Pagada
-                            </span>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
 
             <!-- Botón Ver Todos -->
-            <a href="#" class="mt-3.5 flex items-center justify-center gap-1.5 bg-[#F4F7FE] hover:bg-[#E0E5F2] text-[10px] font-extrabold text-[#4318FF] py-2.5 px-3 rounded-lg border border-[#E0E5F2] transition-all group duration-200">
+            <a href="{{ route('invoices') }}" class="mt-3.5 flex items-center justify-center gap-1.5 bg-[#F4F7FE] hover:bg-[#E0E5F2] text-[10px] font-extrabold text-[#4318FF] py-2.5 px-3 rounded-lg border border-[#E0E5F2] transition-all group duration-200">
                 <span>Ver todas las facturas</span>
                 <svg class="h-3 w-3 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -333,68 +317,55 @@
 
                 <!-- Lista de Tickets -->
                 <div class="space-y-2.5">
-                    <!-- Ticket 1: Abierto -->
-                    <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-8 w-8 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
-                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                    @forelse ($recentTickets as $ticket)
+                        @php
+                            $badgeClass = match ($ticket->status) {
+                                'open' => 'bg-amber-50 text-amber-500',
+                                'replied' => 'bg-[#4318FF]/5 text-[#4318FF]',
+                                default => 'bg-slate-100 text-slate-500',
+                            };
+                            $badgeLabel = match ($ticket->status) {
+                                'open' => 'En Proceso',
+                                'replied' => 'Respondido',
+                                default => 'Cerrado',
+                            };
+                        @endphp
+                        <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
+                            <div class="flex items-center gap-3 min-w-0 font-sans">
+                                <div class="h-8 w-8 rounded-lg {{ $badgeClass }} flex items-center justify-center shrink-0">
+                                    @if ($ticket->status === 'replied')
+                                        <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-2.503a8.01 8.01 0 001.88-.188c1.853-.5 3.26-2.09 3.26-4.004V8.585c0-1.925-1.4-3.513-3.26-4.01a14.963 14.963 0 00-7.06 0C4.9 5.072 3.5 6.66 3.5 8.586v4.174z" />
+                                        </svg>
+                                    @else
+                                        <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    @endif
+                                </div>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="text-xs font-bold text-[#1B254B] truncate">{{ $ticket->subject }}</span>
+                                    <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">ID: #TK-{{ $ticket->id }} • Act: {{ $ticket->updated_at->diffForHumans(null, true) }}</span>
+                                </div>
                             </div>
-                            <div class="flex flex-col min-w-0">
-                                <span class="text-xs font-bold text-[#1B254B] truncate">Error de conexión en Base de Datos Postgres</span>
-                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">ID: #TK-4921 • Act: 15m</span>
-                            </div>
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold {{ $badgeClass }} select-none shrink-0">
+                                {{ $badgeLabel }}
+                            </span>
                         </div>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-amber-50 text-amber-500 select-none shrink-0">
-                            En Proceso
-                        </span>
-                    </div>
-
-                    <!-- Ticket 2: Respondido -->
-                    <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-8 w-8 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
-                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-2.503a8.01 8.01 0 001.88-.188c1.853-.5 3.26-2.09 3.26-4.004V8.585c0-1.925-1.4-3.513-3.26-4.01a14.963 14.963 0 00-7.06 0C4.9 5.072 3.5 6.66 3.5 8.586v4.174z" />
-                                </svg>
-                            </div>
-                            <div class="flex flex-col min-w-0">
-                                <span class="text-xs font-bold text-[#1B254B] truncate">Consulta sobre ampliación de disco</span>
-                                <span class="text-[9px] text-[#A3AED0] font-bold mt-0.5">ID: #TK-4819 • Act: 2h</span>
-                            </div>
+                    @empty
+                        <div class="py-6 text-center text-xs font-bold text-[#A3AED0]">
+                            No tienes tickets recientes.
                         </div>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-[#4318FF]/5 text-[#4318FF] select-none shrink-0">
-                            Respondido
-                        </span>
-                    </div>
-
-                    <!-- Ticket 3: Cerrado -->
-                    <div class="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#F4F7FE]/40 transition-colors duration-150 border border-transparent hover:border-[#F4F7FE]">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-8 w-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
-                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div class="flex flex-col min-w-0">
-                                <span class="text-xs font-bold text-[#1B254B] truncate">Instalación de SSL Wildcard en nebulix.io</span>
-                                <span class="text-[9px] text-[#A3AED0] font-semibold mt-0.5">ID: #TK-4752 • Cerrado hace 1d</span>
-                            </div>
-                        </div>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-extrabold bg-slate-100 text-slate-500 select-none shrink-0">
-                            Cerrado
-                        </span>
-                    </div>
+                    @endforelse
                 </div>
             </div>
 
             <!-- Botones de Acción -->
             <div class="mt-3.5 flex flex-col sm:flex-row gap-2">
-                <a href="#" class="flex-1 flex items-center justify-center gap-1.5 bg-[#F4F7FE] hover:bg-[#E0E5F2] text-[10px] font-extrabold text-[#4318FF] py-2.5 px-3 rounded-lg border border-[#E0E5F2] transition-all group duration-200">
+                <a href="{{ route('tickets') }}" class="flex-1 flex items-center justify-center gap-1.5 bg-[#F4F7FE] hover:bg-[#E0E5F2] text-[10px] font-extrabold text-[#4318FF] py-2.5 px-3 rounded-lg border border-[#E0E5F2] transition-all group duration-200">
                     <span>Ver todos</span>
                 </a>
-                <a href="#" class="flex-1 flex items-center justify-center gap-1.5 bg-[#4318FF] hover:bg-[#3b15e0] active:scale-95 text-white text-[10px] font-extrabold py-2.5 px-3 rounded-lg transition-all shadow-[0px_8px_20px_rgba(67,24,255,0.15)] duration-200">
+                <a href="{{ route('tickets') }}" class="flex-1 flex items-center justify-center gap-1.5 bg-[#4318FF] hover:bg-[#3b15e0] active:scale-95 text-white text-[10px] font-extrabold py-2.5 px-3 rounded-lg transition-all shadow-[0px_8px_20px_rgba(67,24,255,0.15)] duration-200">
                     <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>

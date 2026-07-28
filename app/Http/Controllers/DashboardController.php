@@ -23,6 +23,12 @@ class DashboardController extends Controller
         // Active Services list for the dashboard table
         $services = $user->services()->where('status', 'active')->take(4)->get();
 
+        // Recent Invoices (limit 3)
+        $recentInvoices = $user->invoices()->orderBy('id', 'desc')->take(3)->get();
+
+        // Recent Tickets (limit 3)
+        $recentTickets = $user->tickets()->orderBy('id', 'desc')->take(3)->get();
+
         return view('dashboard.index', compact(
             'user',
             'servicesCount',
@@ -32,7 +38,9 @@ class DashboardController extends Controller
             'domainsCount',
             'ticketsCount',
             'openTicketsCount',
-            'services'
+            'services',
+            'recentInvoices',
+            'recentTickets'
         ));
     }
 
@@ -110,6 +118,23 @@ class DashboardController extends Controller
 
     public function affiliates()
     {
-        return view('dashboard.affiliates');
+        $user = auth()->user();
+        $referrals = $user->referrals()->orderBy('registered_at', 'desc')->get();
+        
+        $referralsCount = $referrals->count();
+        $activeCount = $referrals->where('status', 'active')->count();
+        $pendingCount = $referrals->where('status', 'pending')->count();
+        
+        $totalEarned = $referrals->where('status', 'active')->sum('total_earned');
+        $pendingPayout = 47.50;
+
+        return view('dashboard.affiliates', compact(
+            'referrals',
+            'referralsCount',
+            'activeCount',
+            'pendingCount',
+            'totalEarned',
+            'pendingPayout'
+        ));
     }
 }

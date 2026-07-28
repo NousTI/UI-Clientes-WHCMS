@@ -3,7 +3,7 @@
 @section('title', 'Programa de Afiliados')
 
 @section('content')
-<div class="space-y-6">
+<div x-data="{ showAllReferralsModal: false }" class="space-y-6">
 
     {{-- ─── Page Header ────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -37,15 +37,15 @@
                 {{-- Stat mini-cards --}}
                 <div class="flex gap-3">
                     <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-3 text-center min-w-[90px]">
-                        <span class="text-xl font-black text-white block leading-none">$47.50</span>
+                        <span class="text-xl font-black text-white block leading-none">${{ number_format($pendingPayout, 2) }}</span>
                         <span class="text-[9px] font-bold text-white/60 block mt-0.5">Pendiente</span>
                     </div>
                     <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-3 text-center min-w-[90px]">
-                        <span class="text-xl font-black text-[#8AEF97] block leading-none">$210.00</span>
+                        <span class="text-xl font-black text-[#8AEF97] block leading-none">${{ number_format($totalEarned, 2) }}</span>
                         <span class="text-[9px] font-bold text-white/60 block mt-0.5">Total ganado</span>
                     </div>
                     <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-3 text-center min-w-[90px]">
-                        <span class="text-xl font-black text-white block leading-none">8</span>
+                        <span class="text-xl font-black text-white block leading-none">{{ $referralsCount }}</span>
                         <span class="text-[9px] font-bold text-white/60 block mt-0.5">Referidos</span>
                     </div>
                 </div>
@@ -60,9 +60,9 @@
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
             </div>
             <div>
-                <span class="text-[26px] font-black text-[#1B254B] leading-none block">8</span>
+                <span class="text-[26px] font-black text-[#1B254B] leading-none block">{{ $referralsCount }}</span>
                 <span class="text-[11px] font-bold text-[#A3AED0] block mt-0.5">Referidos Totales</span>
-                <span class="text-[9px] font-bold text-emerald-500 block mt-0.5">5 activos · 3 pendientes</span>
+                <span class="text-[9px] font-bold text-emerald-500 block mt-0.5">{{ $activeCount }} activos · {{ $pendingCount }} pendientes</span>
             </div>
         </div>
         <div class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50 flex items-center gap-4 transition-all hover:scale-[1.02] duration-200">
@@ -70,7 +70,7 @@
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.214.113a3.181 3.181 0 003.572 0l.214-.113A3.181 3.181 0 0015 13.182V10.82a3.181 3.181 0 00-1.5-2.727l-.214-.113a3.181 3.181 0 00-3.572 0L9 8.09a3.181 3.181 0 00-1.5 2.727v2.364c0 1.25.75 2.364 1.5 2.727z"/></svg>
             </div>
             <div>
-                <span class="text-[26px] font-black text-[#1B254B] leading-none block">$210</span>
+                <span class="text-[26px] font-black text-[#1B254B] leading-none block">${{ number_format($totalEarned, 2) }}</span>
                 <span class="text-[11px] font-bold text-[#A3AED0] block mt-0.5">Total Ganado</span>
                 <span class="text-[9px] font-bold text-emerald-500 block mt-0.5">Acumulado histórico</span>
             </div>
@@ -80,7 +80,7 @@
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
             <div>
-                <span class="text-[26px] font-black text-[#1B254B] leading-none block">$47.50</span>
+                <span class="text-[26px] font-black text-[#1B254B] leading-none block">${{ number_format($pendingPayout, 2) }}</span>
                 <span class="text-[11px] font-bold text-[#A3AED0] block mt-0.5">Pendiente de Cobro</span>
                 <span class="text-[9px] font-bold text-amber-500 block mt-0.5">Próximo pago: 1 Ago</span>
             </div>
@@ -146,11 +146,11 @@
                 <div class="flex items-center justify-between mb-5">
                     <div>
                         <h3 class="text-base font-extrabold text-[#1B254B] tracking-tight">Mis Referidos</h3>
-                        <span class="text-[10px] font-bold text-[#A3AED0]">8 personas han usado tu enlace</span>
+                        <span class="text-[10px] font-bold text-[#A3AED0]">{{ $referralsCount }} {{ Str::plural('persona', $referralsCount) }} han usado tu enlace</span>
                     </div>
                     <div class="flex gap-1.5">
-                        <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-500 text-[8px] font-extrabold uppercase px-2 py-0.5 rounded-full">5 activos</span>
-                        <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-500 text-[8px] font-extrabold uppercase px-2 py-0.5 rounded-full">3 pendientes</span>
+                        <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-500 text-[8px] font-extrabold uppercase px-2 py-0.5 rounded-full">{{ $activeCount }} activos</span>
+                        <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-500 text-[8px] font-extrabold uppercase px-2 py-0.5 rounded-full">{{ $pendingCount }} pendientes</span>
                     </div>
                 </div>
 
@@ -163,92 +163,51 @@
                 </div>
 
                 <div class="divide-y divide-[#F4F7FE]">
-
-                    {{-- Referido 1 --}}
-                    <div class="grid grid-cols-[1fr_auto_auto_auto] gap-3 items-center py-3.5 px-3 hover:bg-[#F4F7FE]/30 rounded-xl transition-colors -mx-3">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-[#4318FF] to-[#868CFF] flex items-center justify-center text-white text-[9px] font-black shrink-0">MC</div>
-                            <div class="min-w-0">
-                                <span class="text-xs font-extrabold text-[#1B254B] block">María Castro</span>
-                                <span class="text-[10px] font-semibold text-[#A3AED0]">Registrado: 15 Jun 2026</span>
+                    @forelse ($referrals->take(5) as $referral)
+                        @php
+                            $words = explode(' ', $referral->referred_name);
+                            $initials = strtoupper(substr($words[0] ?? '', 0, 1) . substr($words[1] ?? '', 0, 1));
+                            $gradient = match ($referral->id % 4) {
+                                0 => 'from-[#4318FF] to-[#868CFF]',
+                                1 => 'from-emerald-400 to-emerald-600',
+                                2 => 'from-amber-400 to-orange-500',
+                                default => 'from-[#7A5CFF] to-[#4318FF]',
+                            };
+                            $isActive = $referral->status === 'active';
+                        @endphp
+                        <div class="grid grid-cols-[1fr_auto_auto_auto] gap-3 items-center py-3.5 px-3 hover:bg-[#F4F7FE]/30 rounded-xl transition-colors -mx-3">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="h-8 w-8 rounded-full bg-gradient-to-br {{ $gradient }} flex items-center justify-center text-white text-[9px] font-black shrink-0">{{ $initials }}</div>
+                                <div class="min-w-0 font-sans">
+                                    <span class="text-xs font-extrabold text-[#1B254B] block">{{ $referral->referred_name }}</span>
+                                    <span class="text-[10px] font-semibold text-[#A3AED0]">Registrado: {{ $referral->registered_at->format('d M Y') }}</span>
+                                </div>
                             </div>
+                            @if ($isActive)
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[8px] font-extrabold uppercase bg-emerald-50 text-emerald-500 whitespace-nowrap">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>ACTIVO
+                                </span>
+                            @else
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[8px] font-extrabold uppercase bg-amber-50 text-amber-500 whitespace-nowrap">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse"></span>PENDIENTE
+                                </span>
+                            @endif
+                            <span class="text-xs font-extrabold {{ $isActive ? 'text-emerald-500' : 'text-amber-500' }} text-right">{{ number_format($referral->commission_rate, 0) }}%</span>
+                            <span class="text-xs font-black {{ $isActive ? 'text-[#1B254B]' : 'text-[#A3AED0]' }} text-right">${{ number_format($referral->total_earned, 2) }}</span>
                         </div>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[8px] font-extrabold uppercase bg-emerald-50 text-emerald-500 whitespace-nowrap">
-                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>ACTIVO
-                        </span>
-                        <span class="text-xs font-extrabold text-emerald-500 text-right">20%</span>
-                        <span class="text-xs font-black text-[#1B254B] text-right">$47.60</span>
-                    </div>
-
-                    {{-- Referido 2 --}}
-                    <div class="grid grid-cols-[1fr_auto_auto_auto] gap-3 items-center py-3.5 px-3 hover:bg-[#F4F7FE]/30 rounded-xl transition-colors -mx-3">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-[9px] font-black shrink-0">JR</div>
-                            <div class="min-w-0">
-                                <span class="text-xs font-extrabold text-[#1B254B] block">Jorge Ramírez</span>
-                                <span class="text-[10px] font-semibold text-[#A3AED0]">Registrado: 02 Jun 2026</span>
-                            </div>
+                    @empty
+                        <div class="py-8 text-center text-xs font-bold text-[#A3AED0]">
+                            No tienes referidos registrados aún.
                         </div>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[8px] font-extrabold uppercase bg-emerald-50 text-emerald-500 whitespace-nowrap">
-                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>ACTIVO
-                        </span>
-                        <span class="text-xs font-extrabold text-emerald-500 text-right">20%</span>
-                        <span class="text-xs font-black text-[#1B254B] text-right">$32.40</span>
-                    </div>
-
-                    {{-- Referido 3 --}}
-                    <div class="grid grid-cols-[1fr_auto_auto_auto] gap-3 items-center py-3.5 px-3 hover:bg-[#F4F7FE]/30 rounded-xl transition-colors -mx-3">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-[9px] font-black shrink-0">LG</div>
-                            <div class="min-w-0">
-                                <span class="text-xs font-extrabold text-[#1B254B] block">Luisa García</span>
-                                <span class="text-[10px] font-semibold text-[#A3AED0]">Registrado: 20 May 2026</span>
-                            </div>
-                        </div>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[8px] font-extrabold uppercase bg-amber-50 text-amber-500 whitespace-nowrap">
-                            <span class="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse"></span>PENDIENTE
-                        </span>
-                        <span class="text-xs font-extrabold text-amber-500 text-right">20%</span>
-                        <span class="text-xs font-black text-[#A3AED0] text-right">$0.00</span>
-                    </div>
-
-                    {{-- Referido 4 --}}
-                    <div class="grid grid-cols-[1fr_auto_auto_auto] gap-3 items-center py-3.5 px-3 hover:bg-[#F4F7FE]/30 rounded-xl transition-colors -mx-3">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-[#7A5CFF] to-[#4318FF] flex items-center justify-center text-white text-[9px] font-black shrink-0">AP</div>
-                            <div class="min-w-0">
-                                <span class="text-xs font-extrabold text-[#1B254B] block">Andrés Pérez</span>
-                                <span class="text-[10px] font-semibold text-[#A3AED0]">Registrado: 10 May 2026</span>
-                            </div>
-                        </div>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[8px] font-extrabold uppercase bg-emerald-50 text-emerald-500 whitespace-nowrap">
-                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>ACTIVO
-                        </span>
-                        <span class="text-xs font-extrabold text-emerald-500 text-right">20%</span>
-                        <span class="text-xs font-black text-[#1B254B] text-right">$58.20</span>
-                    </div>
-
-                    {{-- Referido 5 --}}
-                    <div class="grid grid-cols-[1fr_auto_auto_auto] gap-3 items-center py-3.5 px-3 hover:bg-[#F4F7FE]/30 rounded-xl transition-colors -mx-3">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white text-[9px] font-black shrink-0">SL</div>
-                            <div class="min-w-0">
-                                <span class="text-xs font-extrabold text-[#1B254B] block">Sofía López</span>
-                                <span class="text-[10px] font-semibold text-[#A3AED0]">Registrado: 02 Abr 2026</span>
-                            </div>
-                        </div>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[8px] font-extrabold uppercase bg-emerald-50 text-emerald-500 whitespace-nowrap">
-                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>ACTIVO
-                        </span>
-                        <span class="text-xs font-extrabold text-emerald-500 text-right">20%</span>
-                        <span class="text-xs font-black text-[#1B254B] text-right">$43.80</span>
-                    </div>
+                    @endforelse
                 </div>
 
                 {{-- Ver más --}}
                 <div class="mt-4 pt-4 border-t border-[#F4F7FE] flex items-center justify-between">
-                    <span class="text-[10px] font-semibold text-[#A3AED0]">Mostrando 5 de 8 referidos</span>
-                    <button class="text-[10px] font-extrabold text-[#4318FF] hover:text-[#3311CC] cursor-pointer transition-colors">Ver todos →</button>
+                    <span class="text-[10px] font-semibold text-[#A3AED0]">Mostrando {{ min(5, $referralsCount) }} de {{ $referralsCount }} referidos</span>
+                    @if ($referralsCount > 5)
+                        <button @click="showAllReferralsModal = true" class="text-[10px] font-extrabold text-[#4318FF] hover:text-[#3311CC] cursor-pointer transition-colors">Ver todos →</button>
+                    @endif
                 </div>
             </div>
 
@@ -387,6 +346,108 @@
                         </div>
                     </div>
                 </div>
+            </div>
+    </div>
+
+    {{-- ─── All Referrals Modal ────────────────────────────────────── --}}
+    <div 
+        x-show="showAllReferralsModal" 
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto font-sans"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        style="display: none;"
+    >
+        <!-- Backdrop -->
+        <div 
+            class="fixed inset-0 bg-[#0B1437]/40 backdrop-blur-sm transition-opacity"
+            @click="showAllReferralsModal = false"
+        ></div>
+
+        <!-- Modal Content -->
+        <div 
+            class="relative bg-white rounded-[24px] shadow-[0px_30px_60px_rgba(112,144,176,0.18)] border border-[#E0E5F2] w-full max-w-2xl overflow-hidden transition-all transform flex flex-col max-h-[90vh]"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+        >
+            <!-- Header -->
+            <div class="p-6 border-b border-[#F4F7FE] flex items-center justify-between shrink-0">
+                <div>
+                    <h3 class="text-lg font-extrabold text-[#1B254B]">Lista Completa de Referidos</h3>
+                    <p class="text-xs font-semibold text-[#A3AED0] mt-0.5">{{ $referralsCount }} {{ Str::plural('cliente', $referralsCount) }} registrados a través de tu enlace</p>
+                </div>
+                <button 
+                    @click="showAllReferralsModal = false" 
+                    class="text-[#A3AED0] hover:text-[#1B254B] hover:bg-[#F4F7FE] p-2 rounded-xl transition-all cursor-pointer"
+                >
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- List Body -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-4 min-h-0">
+                {{-- Column headers --}}
+                <div class="grid grid-cols-[1fr_auto_auto_auto] gap-3 px-3 pb-2 border-b border-[#F4F7FE] text-[9px] font-extrabold uppercase tracking-wider text-[#A3AED0] shrink-0">
+                    <span>Cliente</span>
+                    <span class="text-center">Estado</span>
+                    <span class="text-right">Comisión</span>
+                    <span class="text-right">Total</span>
+                </div>
+
+                <div class="divide-y divide-[#F4F7FE]">
+                    @foreach ($referrals as $referral)
+                        @php
+                            $words = explode(' ', $referral->referred_name);
+                            $initials = strtoupper(substr($words[0] ?? '', 0, 1) . substr($words[1] ?? '', 0, 1));
+                            $gradient = match ($referral->id % 4) {
+                                0 => 'from-[#4318FF] to-[#868CFF]',
+                                1 => 'from-emerald-400 to-emerald-600',
+                                2 => 'from-amber-400 to-orange-500',
+                                default => 'from-[#7A5CFF] to-[#4318FF]',
+                            };
+                            $isActive = $referral->status === 'active';
+                        @endphp
+                        <div class="grid grid-cols-[1fr_auto_auto_auto] gap-3 items-center py-3.5 px-3 hover:bg-[#F4F7FE]/30 rounded-xl transition-colors -mx-3">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="h-8 w-8 rounded-full bg-gradient-to-br {{ $gradient }} flex items-center justify-center text-white text-[9px] font-black shrink-0">{{ $initials }}</div>
+                                <div class="min-w-0 font-sans">
+                                    <span class="text-xs font-extrabold text-[#1B254B] block">{{ $referral->referred_name }}</span>
+                                    <span class="text-[10px] font-semibold text-[#A3AED0]">Registrado: {{ $referral->registered_at->format('d M Y') }}</span>
+                                </div>
+                            </div>
+                            @if ($isActive)
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[8px] font-extrabold uppercase bg-emerald-50 text-emerald-500 whitespace-nowrap">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>ACTIVO
+                                </span>
+                            @else
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[8px] font-extrabold uppercase bg-amber-50 text-amber-500 whitespace-nowrap">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse"></span>PENDIENTE
+                                </span>
+                            @endif
+                            <span class="text-xs font-extrabold {{ $isActive ? 'text-emerald-500' : 'text-amber-500' }} text-right">{{ number_format($referral->commission_rate, 0) }}%</span>
+                            <span class="text-xs font-black {{ $isActive ? 'text-[#1B254B]' : 'text-[#A3AED0]' }} text-right">${{ number_format($referral->total_earned, 2) }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-5 bg-[#F4F7FE]/50 border-t border-[#F4F7FE] flex justify-end shrink-0">
+                <button 
+                    @click="showAllReferralsModal = false"
+                    class="bg-[#F4F7FE] hover:bg-[#E0E5F2] text-[#1B254B] text-xs font-extrabold py-2.5 px-5 rounded-xl transition-all cursor-pointer font-sans"
+                >
+                    Cerrar
+                </button>
             </div>
         </div>
     </div>

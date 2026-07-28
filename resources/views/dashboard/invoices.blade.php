@@ -11,13 +11,6 @@
             <h1 class="text-2xl font-extrabold text-[#1B254B] tracking-tight leading-tight">Facturas</h1>
             <p class="text-xs font-semibold text-[#A3AED0] mt-1">Historial de pagos y facturas pendientes</p>
         </div>
-        <div class="flex items-center gap-3">
-            <button class="relative inline-flex items-center gap-2 bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 text-white text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-[0px_6px_20px_rgba(67,24,255,0.25)] transition-all duration-150 overflow-hidden group cursor-pointer">
-                <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
-                <svg class="h-4 w-4 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
-                <span class="relative z-10">Descargar Todo</span>
-            </button>
-        </div>
     </div>
 
     {{-- ─── Stats Row ───────────────────────────────────────────────── --}}
@@ -81,7 +74,7 @@
 
         {{-- ─── Invoice Table (2/3) ───────────────────────────────── --}}
         <div class="lg:col-span-2">
-            <div class="bg-white rounded-[20px] p-6 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50">
+            <div x-data="{ currentFilter: 'Todas' }" class="bg-white rounded-[20px] p-6 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50">
                 {{-- Table Header --}}
                 <div class="flex items-center justify-between mb-5">
                     <div>
@@ -89,14 +82,14 @@
                         <span class="text-[10px] text-[#A3AED0] font-bold mt-0.5 block">{{ $invoicesCount }} {{ Str::plural('factura', $invoicesCount) }} en total</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <select class="rounded-xl border border-[#E2E8F0] bg-[#F4F7FE] py-2 pl-3 pr-7 text-xs font-bold text-[#1B254B] focus:border-[#4318FF] focus:outline-none appearance-none cursor-pointer">
-                            <option>Todas</option>
-                            <option>Pagadas</option>
-                            <option>Pendientes</option>
+                        <select x-model="currentFilter" class="rounded-xl border border-[#E2E8F0] bg-[#F4F7FE] py-2 pl-3 pr-7 text-xs font-bold text-[#1B254B] focus:border-[#4318FF] focus:outline-none appearance-none cursor-pointer">
+                            <option value="Todas">Todas</option>
+                            <option value="Pagadas">Pagadas</option>
+                            <option value="Pendientes">Pendientes</option>
                         </select>
                     </div>
                 </div>
-
+                
                 {{-- Column Headers --}}
                 <div class="grid grid-cols-[1fr_auto_auto_auto] gap-3 px-3 pb-2 border-b border-[#F4F7FE]">
                     <span class="text-[9px] font-extrabold uppercase tracking-wider text-[#A3AED0]">Factura</span>
@@ -104,7 +97,6 @@
                     <span class="text-[9px] font-extrabold uppercase tracking-wider text-[#A3AED0] text-center">Estado</span>
                     <span class="text-[9px] font-extrabold uppercase tracking-wider text-[#A3AED0] text-right">Acción</span>
                 </div>
-
                 {{-- Invoice Rows --}}
                 <div class="divide-y divide-[#F4F7FE]">
                     @forelse ($invoices as $invoice)
@@ -112,7 +104,13 @@
                             $isPaid = $invoice->status === 'paid';
                             $isOverdue = $invoice->status === 'unpaid' && $invoice->due_at->isPast();
                         @endphp
-                        <div class="grid grid-cols-[1fr_auto_auto_auto] gap-3 items-center py-4 px-3 hover:bg-[#F4F7FE]/30 rounded-xl transition-colors duration-150 -mx-3">
+                        <div 
+                            x-show="currentFilter === 'Todas' || 
+                                   (currentFilter === 'Pagadas' && '{{ $invoice->status }}' === 'paid') || 
+                                   (currentFilter === 'Pendientes' && '{{ $invoice->status }}' !== 'paid')"
+                            class="grid grid-cols-[1fr_auto_auto_auto] gap-3 items-center py-4 px-3 hover:bg-[#F4F7FE]/30 rounded-xl transition-colors duration-150 -mx-3"
+                            x-transition
+                        >
                             <div class="flex items-center gap-3 min-w-0">
                                 @if ($isPaid)
                                     <div class="h-9 w-9 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
@@ -236,17 +234,6 @@
                 </div>
             </div>
 
-            {{-- Pending Alert --}}
-            <div class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-amber-200">
-                <div class="flex items-center gap-2 text-amber-500 mb-3">
-                    <svg class="h-5 w-5 shrink-0 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
-                    <h4 class="text-xs font-black uppercase tracking-wider">Factura Pendiente</h4>
-                </div>
-                <p class="text-xs font-bold text-[#1B254B] leading-relaxed">La factura <span class="font-extrabold">#FAC-2026-005</span> vence el <span class="text-amber-500 font-extrabold">10 de Julio, 2026</span>. Evita la suspensión del servicio realizando el pago a tiempo.</p>
-                <button class="w-full mt-4 bg-[#8AEF97] hover:bg-[#7AD887] active:scale-95 text-[#1B254B] text-xs font-extrabold py-2.5 px-4 rounded-xl transition-all shadow-sm cursor-pointer">
-                    Pagar Ahora — $29.00
-                </button>
-            </div>
         </div>
     </div>
 </div>

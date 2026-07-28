@@ -89,4 +89,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Ticket::class);
     }
+
+    /**
+     * @return HasMany<Referral, $this>
+     */
+    public function referrals(): HasMany
+    {
+        return $this->hasMany(Referral::class);
+    }
 }

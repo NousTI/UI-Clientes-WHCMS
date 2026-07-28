@@ -79,7 +79,7 @@ new class extends Component {
         $this->closeModal();
         $this->dispatch('two-factor-enabled');
     }
-
+    const 
     /**
      * Confirm two-factor authentication for the user.
      */

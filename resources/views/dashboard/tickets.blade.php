@@ -3,7 +3,47 @@
 @section('title', 'Tickets de Soporte')
 
 @section('content')
-<div class="space-y-6">
+<div x-data="{ 
+    activeTicket: null, 
+    showDetailsModal: false,
+    getPriorityLabel(priority) {
+        return {
+            'critical': 'CRÍTICO',
+            'high': 'ALTA',
+            'medium': 'MEDIA',
+            'low': 'BAJA'
+        }[priority] || 'BAJA';
+    },
+    getPriorityClass(priority) {
+        return {
+            'critical': 'bg-red-100 text-red-700',
+            'high': 'bg-red-50 text-red-500',
+            'medium': 'bg-orange-50 text-orange-500',
+            'low': 'bg-[#F4F7FE] text-[#A3AED0]'
+        }[priority] || 'bg-[#F4F7FE] text-[#A3AED0]';
+    },
+    getStatusLabel(status) {
+        return {
+            'open': 'ABIERTO',
+            'in_progress': 'EN PROGRESO',
+            'resolved': 'RESUELTO',
+            'closed': 'CERRADO'
+        }[status] || 'CERRADO';
+    },
+    getStatusClass(status) {
+        return {
+            'open': 'bg-[#4318FF]/10 text-[#4318FF]',
+            'in_progress': 'bg-amber-50 text-amber-500',
+            'resolved': 'bg-emerald-50 text-emerald-500',
+            'closed': 'bg-slate-100 text-slate-500'
+        }[status] || 'bg-slate-100 text-slate-500';
+    },
+    formatDate(dateStr) {
+        if (!dateStr) return '';
+        const d = new Date(dateStr);
+        return d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    }
+}" class="space-y-6">
 
     {{-- ─── Page Header ────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -188,11 +228,11 @@
                         </div>
                         {{-- Right --}}
                         <div class="flex sm:flex-col items-center sm:items-end justify-between gap-2 shrink-0">
-                            <a href="#" class="relative inline-flex items-center gap-1.5 bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 text-white text-[10px] font-extrabold px-3 py-2 rounded-xl transition-all overflow-hidden group cursor-pointer">
+                            <button @click="activeTicket = {{ json_encode($ticket->load('messages')) }}; showDetailsModal = true" class="relative inline-flex items-center gap-1.5 bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 text-white text-[10px] font-extrabold px-3 py-2 rounded-xl transition-all overflow-hidden group cursor-pointer border-0">
                                 <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
                                 <svg class="h-3.5 w-3.5 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
                                 <span class="relative z-10">Ver Ticket</span>
-                            </a>
+                            </button>
                             <div class="flex items-center gap-1.5 text-[9px] font-bold {{ $lastReplierColor }}">
                                 @if ($lastReplierText !== 'Sin respuestas')
                                     <span class="h-1.5 w-1.5 rounded-full {{ $lastReplierColor === 'text-emerald-500' ? 'bg-emerald-500 animate-pulse' : 'bg-[#4318FF] animate-pulse' }}"></span>
@@ -239,7 +279,7 @@
                                     <span class="text-[10px] font-semibold text-[#A3AED0]">{{ $statusLabel === 'RESUELTO' ? 'Resuelto' : 'Cerrado' }} {{ $ticket->updated_at->diffForHumans() }} · {{ $repliesCount }} respuestas</span>
                                 </div>
                             </div>
-                            <a href="#" class="text-[10px] font-extrabold text-[#4318FF] hover:underline whitespace-nowrap shrink-0">Ver →</a>
+                            <button @click="activeTicket = {{ json_encode($ticket->load('messages')) }}; showDetailsModal = true" class="text-[10px] font-extrabold text-[#4318FF] hover:underline whitespace-nowrap shrink-0 border-0 bg-transparent cursor-pointer">Ver →</button>
                         </div>
                     @empty
                         <div class="p-4 text-center bg-[#F4F7FE]/20 rounded-xl">
@@ -268,55 +308,6 @@
                 </div>
             </div>
 
-            {{-- SLA / Horario --}}
-            <div class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50">
-                <h3 class="text-xs font-extrabold text-[#1B254B] mb-4 tracking-tight">Acuerdo de Nivel de Servicio</h3>
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="h-6 w-6 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
-                                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-bold text-[#1B254B]">Urgente</span>
-                        </div>
-                        <span class="text-[10px] font-extrabold text-red-500">< 1 hora</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="h-6 w-6 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
-                                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-bold text-[#1B254B]">Alta</span>
-                        </div>
-                        <span class="text-[10px] font-extrabold text-orange-500">< 4 horas</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="h-6 w-6 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
-                                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-bold text-[#1B254B]">Media</span>
-                        </div>
-                        <span class="text-[10px] font-extrabold text-amber-500">< 8 horas</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="h-6 w-6 rounded-lg bg-[#F4F7FE] text-[#A3AED0] flex items-center justify-center shrink-0">
-                                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-bold text-[#1B254B]">Baja</span>
-                        </div>
-                        <span class="text-[10px] font-extrabold text-[#A3AED0]">< 24 horas</span>
-                    </div>
-                    <div class="pt-3 border-t border-[#F4F7FE]">
-                        <div class="flex items-center gap-2 text-[10px] font-semibold text-[#A3AED0]">
-                            <svg class="h-3.5 w-3.5 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            Soporte 24/7 · Lun–Dom
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             {{-- Canales Alternativos --}}
             <div class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50">
                 <h3 class="text-xs font-extrabold text-[#1B254B] mb-4 tracking-tight">Otros Canales</h3>
@@ -341,20 +332,101 @@
                         </div>
                         <svg class="h-4 w-4 text-[#A3AED0] group-hover:text-[#1B254B] group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
                     </a>
-                    <a href="#" class="group flex items-center gap-3 p-3 rounded-xl bg-[#F4F7FE] hover:bg-[#E8EDF6] transition-all select-none">
-                        <div class="h-8 w-8 rounded-lg bg-[#4318FF]/8 text-[#4318FF] flex items-center justify-center shrink-0">
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <span class="text-xs font-extrabold text-[#1B254B] block">Base de Conocimiento</span>
-                            <span class="text-[9px] font-semibold text-[#A3AED0]">Guías y tutoriales</span>
-                        </div>
-                        <svg class="h-4 w-4 text-[#A3AED0] group-hover:text-[#1B254B] group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
-                    </a>
+                    
                 </div>
             </div>
         </div>
 
+    </div>
+
+    {{-- ─── Ticket Details Modal ────────────────────────────────────── --}}
+    <div 
+        x-show="showDetailsModal" 
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto font-sans"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        style="display: none;"
+        @keydown.escape.window="showDetailsModal = false"
+    >
+        {{-- Backdrop --}}
+        <div 
+            class="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
+            @click="showDetailsModal = false"
+        ></div>
+
+        {{-- Modal Content Box --}}
+        <div 
+            x-show="showDetailsModal"
+            class="relative bg-white rounded-[30px] shadow-[0px_24px_50px_rgba(112,144,176,0.18)] border border-white/60 w-full max-w-2xl overflow-hidden transform transition-all flex flex-col max-h-[85vh]"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+            x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+            @click.away="showDetailsModal = false"
+        >
+            {{-- Header --}}
+            <div class="p-6 pb-4 border-b border-[#F4F7FE] flex items-start justify-between shrink-0">
+                <div class="space-y-1.5 pr-8">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="text-[11px] font-black text-[#A3AED0]" x-text="activeTicket?.ticket_number"></span>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[9px] font-extrabold uppercase" :class="getStatusClass(activeTicket?.status)">
+                            <span class="h-1.5 w-1.5 rounded-full" :class="activeTicket?.status === 'open' || activeTicket?.status === 'in_progress' ? 'bg-[#4318FF] animate-pulse' : 'bg-emerald-500'"></span>
+                            <span x-text="getStatusLabel(activeTicket?.status)"></span>
+                        </span>
+                        <span class="px-2.5 py-0.5 rounded-md text-[9px] font-extrabold uppercase" :class="getPriorityClass(activeTicket?.priority)" x-text="getPriorityLabel(activeTicket?.priority)"></span>
+                        <span class="px-2.5 py-0.5 rounded-md text-[9px] font-extrabold uppercase bg-slate-100 text-slate-600" x-text="activeTicket?.department"></span>
+                    </div>
+                    <h3 class="text-lg font-black text-[#1B254B] leading-tight" x-text="activeTicket?.subject"></h3>
+                </div>
+                <button 
+                    @click="showDetailsModal = false"
+                    class="h-8 w-8 rounded-full bg-[#F4F7FE] hover:bg-[#E8EDF6] text-[#A3AED0] hover:text-[#1B254B] flex items-center justify-center transition-all cursor-pointer shrink-0"
+                >
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            {{-- Body: Message Thread --}}
+            <div class="p-6 space-y-4 overflow-y-auto flex-1 bg-[#F4F7FE]/30">
+                <template x-for="(msg, index) in activeTicket?.messages" :key="msg.id">
+                    <div class="flex flex-col" :class="msg.is_agent ? 'items-start' : 'items-end'">
+                        {{-- Sender Indicator --}}
+                        <div class="flex items-center gap-1.5 mb-1 px-1">
+                            <span class="text-[9px] font-extrabold" :class="msg.is_agent ? 'text-emerald-500' : 'text-[#4318FF]'" x-text="msg.is_agent ? 'Agente de Soporte' : 'Tú (Cliente)'"></span>
+                            <span class="text-[9px] font-semibold text-[#A3AED0]">•</span>
+                            <span class="text-[9px] font-semibold text-[#A3AED0]" x-text="formatDate(msg.created_at)"></span>
+                        </div>
+                        
+                        {{-- Bubble --}}
+                        <div 
+                            class="max-w-[85%] rounded-[20px] p-4 text-xs font-semibold leading-relaxed shadow-[0px_4px_12px_rgba(112,144,176,0.03)]"
+                            :class="msg.is_agent 
+                                ? 'bg-white text-[#1B254B] rounded-tl-none border border-[#E0E5F2]' 
+                                : 'bg-[#4318FF] text-white rounded-tr-none'"
+                        >
+                            <p class="whitespace-pre-line" x-text="msg.message"></p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            {{-- Footer / Quick Actions --}}
+            <div class="p-5 border-t border-[#F4F7FE] bg-white flex items-center justify-between shrink-0">
+                <span class="text-[10px] text-[#A3AED0] font-semibold">Si requieres responder, puedes responder a través de email o abrir una nueva solicitud.</span>
+                <button 
+                    @click="showDetailsModal = false"
+                    class="bg-[#F4F7FE] hover:bg-[#E8EDF6] text-[#1B254B] text-xs font-extrabold px-5 py-2.5 rounded-xl transition-all cursor-pointer border-0"
+                >
+                    Cerrar Detalle
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
