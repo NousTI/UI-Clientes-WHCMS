@@ -6,6 +6,13 @@
 <div x-data="{ 
     activeTicket: null, 
     showDetailsModal: false,
+    showCreateModal: false,
+    activeFilter: 'all',
+    newTicketSubject: '',
+    newTicketDepartment: 'Soporte Técnico',
+    newTicketPriority: 'medium',
+    newTicketMessage: '',
+    isSubmittingTicket: false,
     getPriorityLabel(priority) {
         return {
             'critical': 'CRÍTICO',
@@ -43,24 +50,29 @@
         const d = new Date(dateStr);
         return d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
     }
-}" class="space-y-6">
+}" class="space-y-6" @open-new-ticket.window="showCreateModal = true">
+
+    @if (session('success'))
+        <div x-data="{ show: true }" x-show="show" class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-xs font-bold flex items-center justify-between shadow-[0px_8px_20px_rgba(16,185,129,0.06)] animate-fade-in shrink-0 font-sans">
+            <div class="flex items-center gap-2">
+                <svg class="h-4.5 w-4.5 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{{ session('success') }}</span>
+            </div>
+            <button @click="show = false" class="text-emerald-500 hover:text-emerald-700 font-extrabold cursor-pointer border-0 bg-transparent">
+                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    @endif
 
     {{-- ─── Page Header ────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h1 class="text-2xl font-extrabold text-[#1B254B] tracking-tight leading-tight">Tickets de Soporte</h1>
             <p class="text-xs font-semibold text-[#A3AED0] mt-1">Gestiona tus solicitudes de soporte técnico</p>
-        </div>
-        <div class="flex items-center gap-3">
-            <button
-                x-data
-                @click="$dispatch('open-new-ticket')"
-                class="relative inline-flex items-center gap-2 bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 text-white text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-[0px_6px_20px_rgba(67,24,255,0.25)] transition-all duration-150 overflow-hidden group cursor-pointer"
-            >
-                <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
-                <svg class="h-4 w-4 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-                <span class="relative z-10">Abrir Ticket</span>
-            </button>
         </div>
     </div>
 
@@ -125,15 +137,11 @@
 
             {{-- Filters --}}
             <div class="flex flex-wrap items-center gap-2">
-                <button class="bg-[#4318FF] text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-[0px_4px_12px_rgba(67,24,255,0.20)] cursor-pointer">Todos</button>
-                <button class="bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30 px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">Abiertos</button>
-                <button class="bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30 px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">En Progreso</button>
-                <button class="bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30 px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">Resueltos</button>
-                <button class="bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30 px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">Cerrados</button>
-                <div class="ml-auto relative">
-                    <input type="search" placeholder="Buscar ticket..." class="block rounded-xl border border-[#E2E8F0] bg-[#F4F7FE] py-1.5 pl-8 pr-3 text-xs font-bold text-[#1B254B] placeholder-[#A3AED0] focus:border-[#4318FF] focus:bg-white focus:ring-2 focus:ring-[#4318FF]/20 focus:outline-none transition-all w-40">
-                    <svg class="absolute left-2.5 top-2 h-3.5 w-3.5 text-[#A3AED0]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                </div>
+                <button @click="activeFilter = 'all'" :class="activeFilter === 'all' ? 'bg-[#4318FF] text-white shadow-[0px_4px_12px_rgba(67,24,255,0.20)]' : 'bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30'" class="px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">Todos</button>
+                <button @click="activeFilter = 'open'" :class="activeFilter === 'open' ? 'bg-[#4318FF] text-white shadow-[0px_4px_12px_rgba(67,24,255,0.20)]' : 'bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30'" class="px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">Abiertos</button>
+                <button @click="activeFilter = 'in_progress'" :class="activeFilter === 'in_progress' ? 'bg-[#4318FF] text-white shadow-[0px_4px_12px_rgba(67,24,255,0.20)]' : 'bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30'" class="px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">En Progreso</button>
+                <button @click="activeFilter = 'resolved'" :class="activeFilter === 'resolved' ? 'bg-[#4318FF] text-white shadow-[0px_4px_12px_rgba(67,24,255,0.20)]' : 'bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30'" class="px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">Resueltos</button>
+                <button @click="activeFilter = 'closed'" :class="activeFilter === 'closed' ? 'bg-[#4318FF] text-white shadow-[0px_4px_12px_rgba(67,24,255,0.20)]' : 'bg-white border border-[#E0E5F2] text-[#A3AED0] hover:text-[#1B254B] hover:border-[#4318FF]/30'" class="px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">Cerrados</button>
             </div>
 
             @php
@@ -189,7 +197,11 @@
                     }
                 @endphp
                 
-                <div class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border-l-4 {{ $borderLColor }} border border-white/50 {{ $hoverShadow }} transition-all duration-200 font-sans">
+                <div 
+                    x-show="activeFilter === 'all' || activeFilter === '{{ $ticket->status }}'"
+                    x-transition
+                    class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border-l-4 {{ $borderLColor }} border border-white/50 {{ $hoverShadow }} transition-all duration-200 font-sans"
+                >
                     <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                         {{-- Left --}}
                         <div class="flex items-start gap-3 min-w-0 flex-1">
@@ -249,7 +261,7 @@
             @endforelse
 
             {{-- ── Closed Tickets Section ───────────────────────────── --}}
-            <div class="mt-2">
+            <div class="mt-2" x-show="activeFilter === 'all' || activeFilter === 'resolved' || activeFilter === 'closed'" x-transition>
                 <h3 class="text-[10px] font-extrabold text-[#A3AED0] uppercase tracking-wider mb-3">Tickets Cerrados Recientes</h3>
                 <div class="space-y-2">
                     @forelse ($closedTickets as $ticket)
@@ -261,7 +273,7 @@
                             $statusBg = $ticket->status === 'resolved' ? 'bg-emerald-50 text-emerald-500' : 'bg-[#F4F7FE] text-[#A3AED0]';
                             $statusIconColor = $ticket->status === 'resolved' ? 'bg-emerald-50 text-emerald-500' : 'bg-[#F4F7FE] text-[#A3AED0]';
                         @endphp
-                        <div class="bg-white rounded-[20px] p-4 shadow-[0px_8px_24px_rgba(112,144,176,0.04)] border border-[#F4F7FE] hover:border-[#E0E5F2] transition-all duration-150 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-sans">
+                        <div x-show="activeFilter === 'all' || activeFilter === '{{ $ticket->status }}'" x-transition class="bg-white rounded-[20px] p-4 shadow-[0px_8px_24px_rgba(112,144,176,0.04)] border border-[#F4F7FE] hover:border-[#E0E5F2] transition-all duration-150 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-sans">
                             <div class="flex items-center gap-3 min-w-0">
                                 <div class="h-9 w-9 rounded-xl {{ $statusIconColor }} flex items-center justify-center shrink-0">
                                     @if ($ticket->status === 'resolved')
@@ -302,7 +314,7 @@
                     </div>
                     <h4 class="text-sm font-black mb-1">¿Necesitas ayuda?</h4>
                     <p class="text-[11px] text-white/75 font-semibold leading-relaxed mb-4">Nuestro equipo de soporte responde en menos de 2 horas. Abre un ticket y resolveremos tu problema.</p>
-                    <button class="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-extrabold py-2.5 px-4 rounded-xl transition-all cursor-pointer">
+                    <button @click="showCreateModal = true" class="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-extrabold py-2.5 px-4 rounded-xl transition-all cursor-pointer">
                         Abrir Nuevo Ticket
                     </button>
                 </div>
@@ -426,6 +438,101 @@
                     Cerrar Detalle
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal de Creación de Ticket -->
+    <div 
+        x-show="showCreateModal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        style="display: none;"
+    >
+        {{-- Modal Content Box --}}
+        <div 
+            x-show="showCreateModal"
+            @click.away="showCreateModal = false"
+            class="relative bg-white rounded-[30px] shadow-[0px_24px_50px_rgba(112,144,176,0.18)] border border-white/60 w-full max-w-lg overflow-hidden transform transition-all flex flex-col"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+            x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+            @click.away="showCreateModal = false"
+        >
+            {{-- Header --}}
+            <div class="p-6 pb-4 border-b border-[#F4F7FE] flex items-start justify-between shrink-0 font-sans">
+                <div>
+                    <h3 class="text-base font-extrabold text-[#1B254B] tracking-tight">Abrir Nuevo Ticket</h3>
+                    <p class="text-[10px] font-semibold text-[#A3AED0] mt-0.5">Describe tu consulta técnica o administrativa</p>
+                </div>
+                <button 
+                    @click="showCreateModal = false"
+                    class="h-8 w-8 rounded-full bg-[#F4F7FE] hover:bg-[#E8EDF6] text-[#A3AED0] hover:text-[#1B254B] flex items-center justify-center transition-all cursor-pointer shrink-0"
+                >
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            {{-- Form Body --}}
+            <form action="{{ route('tickets.store') }}" method="POST" class="p-6 space-y-4 font-sans">
+                @csrf
+                
+                {{-- Asunto --}}
+                <div class="space-y-1.5">
+                    <label for="subject" class="text-[10px] font-extrabold text-[#1B254B] uppercase tracking-wider">Asunto</label>
+                    <input type="text" id="subject" name="subject" required placeholder="Ej: Error al conectar con base de datos" 
+                           class="w-full rounded-xl border border-[#E2E8F0] bg-[#F4F7FE] py-2.5 px-4 text-xs font-bold text-[#1B254B] placeholder-[#A3AED0] focus:border-[#4318FF] focus:bg-white focus:ring-2 focus:ring-[#4318FF]/20 focus:outline-none transition-all">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    {{-- Departamento --}}
+                    <div class="space-y-1.5">
+                        <label for="department" class="text-[10px] font-extrabold text-[#1B254B] uppercase tracking-wider">Departamento</label>
+                        <select id="department" name="department" class="w-full rounded-xl border border-[#E2E8F0] bg-[#F4F7FE] py-2.5 px-4 text-xs font-bold text-[#1B254B] focus:border-[#4318FF] focus:bg-white focus:ring-2 focus:ring-[#4318FF]/20 focus:outline-none transition-all cursor-pointer">
+                            <option value="Soporte Técnico">Soporte Técnico</option>
+                            <option value="Facturación">Facturación</option>
+                            <option value="Ventas">Ventas</option>
+                        </select>
+                    </div>
+
+                    {{-- Prioridad --}}
+                    <div class="space-y-1.5">
+                        <label for="priority" class="text-[10px] font-extrabold text-[#1B254B] uppercase tracking-wider">Prioridad</label>
+                        <select id="priority" name="priority" class="w-full rounded-xl border border-[#E2E8F0] bg-[#F4F7FE] py-2.5 px-4 text-xs font-bold text-[#1B254B] focus:border-[#4318FF] focus:bg-white focus:ring-2 focus:ring-[#4318FF]/20 focus:outline-none transition-all cursor-pointer">
+                            <option value="low">Baja</option>
+                            <option value="medium" selected>Media</option>
+                            <option value="high">Alta</option>
+                            <option value="critical">Crítica</option>
+                        </select>
+                    </div>
+                </div>
+
+                {{-- Descripción --}}
+                <div class="space-y-1.5">
+                    <label for="message" class="text-[10px] font-extrabold text-[#1B254B] uppercase tracking-wider">Detalles de la Solicitud</label>
+                    <textarea id="message" name="message" rows="5" required placeholder="Describe tu problema con el mayor detalle posible..." 
+                              class="w-full rounded-xl border border-[#E2E8F0] bg-[#F4F7FE] py-3 px-4 text-xs font-semibold text-[#1B254B] placeholder-[#A3AED0] focus:border-[#4318FF] focus:bg-white focus:ring-2 focus:ring-[#4318FF]/20 focus:outline-none transition-all"></textarea>
+                </div>
+
+                {{-- Submit Actions --}}
+                <div class="pt-3 border-t border-[#F4F7FE] flex items-center justify-end gap-2.5">
+                    <button type="button" @click="showCreateModal = false" 
+                            class="bg-[#F4F7FE] hover:bg-[#E8EDF6] text-[#1B254B] text-xs font-extrabold px-5 py-2.5 rounded-xl transition-all cursor-pointer border-0">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                            class="bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 text-white text-xs font-extrabold px-5 py-2.5 rounded-xl transition-all shadow-[0px_6px_20px_rgba(67,24,255,0.20)] cursor-pointer">
+                        Enviar Ticket
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

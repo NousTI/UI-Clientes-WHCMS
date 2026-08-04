@@ -106,11 +106,7 @@
             <span class="shimmer-text">IMPULSAMOS</span><br>
             la innovacion en un universo digital. <br>
         </h1>
-        
-        <p class="fade-in-up delay-300 text-base sm:text-lg font-semibold text-[#A3AED0] leading-relaxed max-w-2xl mx-auto mb-10">
-            Servidores VPS, hosting dedicado, dominios y almacenamiento cloud de alto rendimiento — todo gestionado desde un panel intuitivo y potente.
-        </p>
-
+     
         {{-- CTA Buttons --}}
         <div class="fade-in-up delay-400 flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
             @if (Route::has('register'))
@@ -144,29 +140,6 @@
     </div>
 </section>
 
-{{-- ─── Stats Strip ─────────────────────────────────────────────────── --}}
-<section class="py-12 bg-white border-y border-[#F4F7FE]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="text-center">
-                <div class="text-3xl font-black text-[#4318FF] mb-1">12K+</div>
-                <div class="text-xs font-bold text-[#A3AED0]">Clientes activos</div>
-            </div>
-            <div class="text-center">
-                <div class="text-3xl font-black text-[#4318FF] mb-1">99.99%</div>
-                <div class="text-xs font-bold text-[#A3AED0]">Uptime garantizado</div>
-            </div>
-            <div class="text-center">
-                <div class="text-3xl font-black text-[#4318FF] mb-1">15</div>
-                <div class="text-xs font-bold text-[#A3AED0]">Regiones globales</div>
-            </div>
-            <div class="text-center">
-                <div class="text-3xl font-black text-[#4318FF] mb-1">&lt;2h</div>
-                <div class="text-xs font-bold text-[#A3AED0]">Respuesta de soporte</div>
-            </div>
-        </div>
-    </div>
-</section>
 
 {{-- ─── CTA Final ───────────────────────────────────────────────────── --}}
 <section class="py-20">

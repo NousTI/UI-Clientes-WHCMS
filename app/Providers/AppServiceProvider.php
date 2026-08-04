@@ -6,9 +6,11 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Livewire;
+use Lunar\Admin\Support\Facades\LunarPanel;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,7 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        if (class_exists(LunarPanel::class)) {
+            LunarPanel::register();
+        }
     }
 
     /**
@@ -28,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
 
         if (request()->header('X-Forwarded-Proto') === 'https') {
-            \Illuminate\Support\Facades\URL::forceScheme('https');
+            URL::forceScheme('https');
         }
 
         if (class_exists(Livewire::class)) {

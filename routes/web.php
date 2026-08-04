@@ -10,7 +10,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('services', [DashboardController::class, 'services'])->name('services');
     Route::get('domains', [DashboardController::class, 'domains'])->name('domains');
     Route::get('invoices', [DashboardController::class, 'invoices'])->name('invoices');
+    Route::get('invoices/{invoice}/download', [DashboardController::class, 'downloadInvoice'])->name('invoices.download');
     Route::get('tickets', [DashboardController::class, 'tickets'])->name('tickets');
+    Route::post('tickets', [DashboardController::class, 'storeTicket'])->name('tickets.store');
     Route::get('affiliates', [DashboardController::class, 'affiliates'])->name('affiliates');
 });
 

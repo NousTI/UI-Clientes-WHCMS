@@ -18,6 +18,7 @@
         $paidInvoicesCount = $invoices->where('status', 'paid')->count();
         $nextUnpaidInvoice = $invoices->where('status', 'unpaid')->sortBy('due_at')->first();
         $lastPaidInvoice = $invoices->where('status', 'paid')->sortByDesc('paid_at')->first();
+        
     @endphp
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {{-- Total --}}
@@ -153,7 +154,7 @@
                             @endif
                             <div class="flex items-center justify-end gap-1.5">
                                 @if ($isPaid)
-                                    <a href="#" class="h-8 w-8 rounded-lg bg-[#4318FF]/8 text-[#4318FF] hover:bg-[#4318FF] hover:text-white flex items-center justify-center transition-all cursor-pointer" title="Descargar PDF">
+                                    <a href="{{ route('invoices.download', $invoice) }}" class="h-8 w-8 rounded-lg bg-[#4318FF]/8 text-[#4318FF] hover:bg-[#4318FF] hover:text-white flex items-center justify-center transition-all cursor-pointer" title="Descargar PDF">
                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                                     </a>
                                 @else
@@ -211,25 +212,19 @@
             <div class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50">
                 <h3 class="text-xs font-extrabold text-[#1B254B] mb-4 tracking-tight">Resumen de Facturación</h3>
                 <div class="space-y-3">
-                    <div class="flex justify-between items-center">
-                        <span class="text-[10px] font-semibold text-[#A3AED0]">VPS Pro NYC-01</span>
-                        <span class="text-[10px] font-extrabold text-[#1B254B]">$24.00</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-[10px] font-semibold text-[#A3AED0]">Dedicado MIA-02</span>
-                        <span class="text-[10px] font-extrabold text-[#1B254B]">$89.00</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-[10px] font-semibold text-[#A3AED0]">Object Storage</span>
-                        <span class="text-[10px] font-extrabold text-[#1B254B]">$12.00</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-[10px] font-semibold text-[#A3AED0]">VPS Dev SFO-03</span>
-                        <span class="text-[10px] font-extrabold text-[#1B254B]">$10.00</span>
-                    </div>
-                    <div class="border-t border-[#F4F7FE] pt-3 flex justify-between items-center">
+                    @forelse ($activeServices as $service)
+                        <div class="flex justify-between items-center font-sans">
+                            <span class="text-[10px] font-semibold text-[#A3AED0]">{{ $service->name }}</span>
+                            <span class="text-[10px] font-extrabold text-[#1B254B]">${{ number_format($service->price, 2) }}</span>
+                        </div>
+                    @empty
+                        <div class="text-center py-4">
+                            <span class="text-[10px] font-bold text-[#A3AED0]">No tienes servicios activos contratados.</span>
+                        </div>
+                    @endforelse
+                    <div class="border-t border-[#F4F7FE] pt-3 flex justify-between items-center font-sans">
                         <span class="text-xs font-extrabold text-[#1B254B]">Total Mensual</span>
-                        <span class="text-sm font-black text-[#4318FF]">$135.00</span>
+                        <span class="text-sm font-black text-[#4318FF]">${{ number_format($monthlyBillingTotal, 2) }}</span>
                     </div>
                 </div>
             </div>

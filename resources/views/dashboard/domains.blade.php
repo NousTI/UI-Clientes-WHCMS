@@ -3,7 +3,7 @@
 @section('title', 'Dominios')
 
 @section('content')
-<div class="space-y-6">
+<div x-data="{ search: '', showRegisterModal: false, domainQuery: '', domainResults: null, isSearching: false }" class="space-y-6">
 
     {{-- ─── Page Header ────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -12,11 +12,11 @@
             <p class="text-xs font-semibold text-[#A3AED0] mt-1">Administra y renueva tu portafolio de dominios</p>
         </div>
         <div class="flex items-center gap-3">
-            <a href="#" class="relative inline-flex items-center gap-2 bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 text-white text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-[0px_6px_20px_rgba(67,24,255,0.25)] transition-all duration-150 overflow-hidden group">
+            <button @click="showRegisterModal = true" class="relative inline-flex items-center gap-2 bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 text-white text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-[0px_6px_20px_rgba(67,24,255,0.25)] transition-all duration-150 overflow-hidden group cursor-pointer">
                 <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
                 <svg class="h-4 w-4 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
                 <span class="relative z-10">Registrar Dominio</span>
-            </a>
+            </button>
         </div>
     </div>
 
@@ -54,7 +54,7 @@
             <div>
                 <span class="text-[26px] font-black text-[#1B254B] leading-none block">{{ $expiringSoonCount }}</span>
                 <span class="text-[11px] font-bold text-[#A3AED0] block mt-0.5">Vencen Pronto</span>
-                <span class="text-[9px] font-bold text-[#D97706] block mt-0.5">{{ $expiringSoonDomain ? $expiringSoonDomain->domain_name : 'Ninguno' }}</span>
+                <span class="text-[9px] font-bold text-[#D97706] block mt-0.5">{{ $expiringSoonDomain ? $expiringSoonDomain->domain_name : 'b' }}</span>
             </div>
         </div>
         <div class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50 flex items-center gap-4 transition-all hover:scale-[1.02] duration-200">
@@ -83,7 +83,7 @@
                         <span class="text-[10px] text-[#A3AED0] font-bold mt-0.5 block">Lista completa de dominios registrados</span>
                     </div>
                     <div class="relative">
-                        <input type="search" placeholder="Buscar dominio..." class="block rounded-xl border border-[#E2E8F0] bg-[#F4F7FE] py-2 pl-8 pr-3 text-xs font-bold text-[#1B254B] placeholder-[#A3AED0] focus:border-[#4318FF] focus:bg-white focus:ring-2 focus:ring-[#4318FF]/20 focus:outline-none transition-all w-40">
+                        <input x-model="search" type="search" placeholder="Buscar dominio..." class="block rounded-xl border border-[#E2E8F0] bg-[#F4F7FE] py-2 pl-8 pr-3 text-xs font-bold text-[#1B254B] placeholder-[#A3AED0] focus:border-[#4318FF] focus:bg-white focus:ring-2 focus:ring-[#4318FF]/20 focus:outline-none transition-all w-40">
                         <svg class="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-[#A3AED0]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
                 </div>
@@ -106,7 +106,11 @@
                                 $iconClass = 'bg-emerald-50 text-emerald-500';
                             }
                         @endphp
-                        <div class="{{ $wrapperClass }}">
+                        <div 
+                            x-show="search === '' || '{{ strtolower($domain->domain_name) }}'.includes(search.toLowerCase())"
+                            class="{{ $wrapperClass }}"
+                            x-transition
+                        >
                             <div class="flex items-center gap-3 min-w-0">
                                 <div class="h-9 w-9 rounded-lg {{ $iconClass }} flex items-center justify-center shrink-0">
                                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253"/></svg>
@@ -178,7 +182,7 @@
                         </div>
                         <svg class="h-4 w-4 text-amber-400 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
                     </a>
-                    <a href="#" class="group flex items-center justify-between p-3 rounded-xl border border-[#F4F7FE] hover:border-[#4318FF]/20 hover:bg-[#F4F7FE]/50 transition-all select-none">
+                    <button @click="showRegisterModal = true" class="w-full text-left group flex items-center justify-between p-3 rounded-xl border border-[#F4F7FE] hover:border-[#4318FF]/20 hover:bg-[#F4F7FE]/50 transition-all select-none cursor-pointer">
                         <div class="flex items-center gap-3 min-w-0">
                             <div class="h-8 w-8 rounded-lg bg-[#4318FF]/8 text-[#4318FF] flex items-center justify-center shrink-0"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg></div>
                             <div class="leading-tight">
@@ -187,7 +191,7 @@
                             </div>
                         </div>
                         <svg class="h-4 w-4 text-[#A3AED0] group-hover:text-[#4318FF] group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
-                    </a>
+                    </button>
                     <a href="#" class="group flex items-center justify-between p-3 rounded-xl border border-[#F4F7FE] hover:border-[#4318FF]/20 hover:bg-[#F4F7FE]/50 transition-all select-none">
                         <div class="flex items-center gap-3 min-w-0">
                             <div class="h-8 w-8 rounded-lg bg-[#4318FF]/8 text-[#4318FF] flex items-center justify-center shrink-0"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div>
@@ -225,6 +229,124 @@
                 </button>
             </div>
         </div>
+    </div>
+
+    <!-- Modal de Registro de Dominios -->
+    <div x-show="showRegisterModal" 
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         style="display: none;">
+         
+         <div class="bg-white rounded-[24px] p-6 shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.15)] border border-[#E0E5F2] w-full max-w-lg transform transition-all duration-300"
+              @click.away="showRegisterModal = false; domainQuery = ''; domainResults = null; isSearching = false"
+              x-transition:enter="transition ease-out duration-300"
+              x-transition:enter-start="opacity-0 scale-95"
+              x-transition:enter-end="opacity-100 scale-100"
+              x-transition:leave="transition ease-in duration-200"
+              x-transition:leave-start="opacity-100 scale-100"
+              x-transition:leave-end="opacity-0 scale-95">
+              
+             <!-- Cabecera -->
+             <div class="flex items-center justify-between border-b border-[#F4F7FE] pb-4 mb-4">
+                 <div>
+                     <h3 class="text-base font-extrabold text-[#1B254B] tracking-tight">Buscar Nuevo Dominio</h3>
+                     <p class="text-[10px] font-semibold text-[#A3AED0] mt-0.5">Verifica disponibilidad de nombres de forma instantánea</p>
+                 </div>
+                 <button @click="showRegisterModal = false; domainQuery = ''; domainResults = null; isSearching = false" class="text-[#A3AED0] hover:text-[#1B254B] transition-colors cursor-pointer">
+                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                     </svg>
+                 </button>
+             </div>
+
+             <!-- Formulario -->
+             <div class="space-y-4">
+                 <div class="relative">
+                     <input x-model="domainQuery" 
+                            @keydown.enter="if(domainQuery.trim() !== '') { 
+                                isSearching = true; 
+                                domainResults = null; 
+                                setTimeout(() => { 
+                                    isSearching = false; 
+                                    const cleaned = domainQuery.trim().toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').split('.')[0];
+                                    domainResults = [
+                                        { ext: '.com', available: cleaned !== 'google' && cleaned !== 'facebook', price: 12.99 },
+                                        { ext: '.net', available: true, price: 14.50 },
+                                        { ext: '.tech', available: cleaned.length > 3, price: 4.99 }
+                                    ];
+                                }, 1200); 
+                            }"
+                            type="text" 
+                            placeholder="Introduce tu marca o dominio (ej. noushosting)..." 
+                            class="w-full rounded-xl border border-[#E2E8F0] bg-[#F4F7FE] py-3 pl-4 pr-24 text-xs font-bold text-[#1B254B] placeholder-[#A3AED0] focus:border-[#4318FF] focus:bg-white focus:ring-2 focus:ring-[#4318FF]/20 focus:outline-none transition-all">
+                     
+                     <button @click="if(domainQuery.trim() !== '') { 
+                                 isSearching = true; 
+                                 domainResults = null; 
+                                 setTimeout(() => { 
+                                     isSearching = false; 
+                                     const cleaned = domainQuery.trim().toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').split('.')[0];
+                                     domainResults = [
+                                         { ext: '.com', available: cleaned !== 'google' && cleaned !== 'facebook', price: 12.99 },
+                                         { ext: '.net', available: true, price: 14.50 },
+                                         { ext: '.tech', available: cleaned.length > 3, price: 4.99 }
+                                     ];
+                                 }, 1200); 
+                             }"
+                             class="absolute right-1.5 top-1.5 bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 text-white text-[10px] font-extrabold px-4 py-2 rounded-lg transition-all cursor-pointer">
+                         Buscar
+                     </button>
+                 </div>
+
+                 <!-- Animación de Búsqueda -->
+                 <div x-show="isSearching" class="py-12 flex flex-col items-center justify-center gap-3">
+                     <div class="h-8 w-8 rounded-full border-3 border-[#4318FF]/10 border-t-[#4318FF] animate-spin"></div>
+                     <span class="text-[10px] font-extrabold text-[#A3AED0]">Consultando servidores WHOIS...</span>
+                 </div>
+
+                 <!-- Resultados de Búsqueda -->
+                 <div x-show="domainResults && !isSearching" class="space-y-3 font-sans" style="display: none;">
+                     <h4 class="text-[10px] font-extrabold uppercase text-[#A3AED0] tracking-wider mb-1">Resultados de disponibilidad</h4>
+                     <template x-for="res in domainResults">
+                         <div class="flex items-center justify-between p-3.5 rounded-xl border transition-all duration-150"
+                              :class="res.available ? 'bg-emerald-50/40 border-emerald-100' : 'bg-red-50/40 border-red-100'">
+                              
+                             <div class="flex items-center gap-3 min-w-0">
+                                 <div class="h-7 w-7 rounded-lg flex items-center justify-center shrink-0"
+                                      :class="res.available ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-500'">
+                                      <svg x-show="res.available" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                      </svg>
+                                      <svg x-show="!res.available" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                      </svg>
+                                 </div>
+                                 <div class="min-w-0">
+                                     <span class="text-xs font-extrabold text-[#1B254B]" x-text="domainQuery.trim().toLowerCase().split('.')[0] + res.ext"></span>
+                                     <span class="block text-[8px] font-extrabold uppercase mt-0.5"
+                                           :class="res.available ? 'text-emerald-500' : 'text-red-500'"
+                                           x-text="res.available ? 'Disponible' : 'No disponible'"></span>
+                                 </div>
+                             </div>
+                             
+                             <div class="flex items-center gap-2">
+                                 <span class="text-xs font-black text-[#1B254B]" x-text="'$' + res.price.toFixed(2) + '/año'"></span>
+                                 <button x-show="res.available" 
+                                         @click="alert('¡Compra simulada con éxito! Este dominio se registrará en tu cuenta en la Fase 3 del plan de prácticas.')"
+                                         class="bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 text-white text-[9px] font-extrabold px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+                                     Comprar
+                                 </button>
+                             </div>
+                         </div>
+                     </template>
+                 </div>
+             </div>
+         </div>
     </div>
 </div>
 @endsection

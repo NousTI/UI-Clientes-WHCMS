@@ -72,7 +72,6 @@
             <div>
                 <span class="text-[26px] font-black text-[#1B254B] leading-none block">${{ number_format($totalEarned, 2) }}</span>
                 <span class="text-[11px] font-bold text-[#A3AED0] block mt-0.5">Total Ganado</span>
-                <span class="text-[9px] font-bold text-emerald-500 block mt-0.5">Acumulado histórico</span>
             </div>
         </div>
         <div class="bg-white rounded-[20px] p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-amber-100 flex items-center gap-4 transition-all hover:scale-[1.02] duration-200">
@@ -92,7 +91,6 @@
             <div>
                 <span class="text-[26px] font-black text-[#1B254B] leading-none block">20%</span>
                 <span class="text-[11px] font-bold text-[#A3AED0] block mt-0.5">Tu Comisión</span>
-                <span class="text-[9px] font-bold text-[#4318FF] block mt-0.5">Por 12 meses · sin límite</span>
             </div>
         </div>
     </div>
@@ -211,60 +209,7 @@
                 </div>
             </div>
 
-            {{-- Historial de pagos --}}
-            <div class="bg-white rounded-[20px] p-6 shadow-[0px_18px_40px_rgba(112,144,176,0.06)] border border-white/50">
-                <h3 class="text-sm font-extrabold text-[#1B254B] mb-5 tracking-tight">Historial de Retiros</h3>
-                <div class="space-y-2">
-
-                    <div class="flex items-center justify-between gap-3 p-3 bg-[#F4F7FE] rounded-xl">
-                        <div class="flex items-center gap-3">
-                            <div class="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
-                            </div>
-                            <div>
-                                <span class="text-xs font-extrabold text-[#1B254B] block">Retiro PayPal</span>
-                                <span class="text-[10px] font-semibold text-[#A3AED0]">01 Jul 2026 · pay***@email.com</span>
-                            </div>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="text-sm font-black text-emerald-500 block">+$80.00</span>
-                            <span class="text-[9px] font-extrabold uppercase text-emerald-500 bg-emerald-50 px-1.5 py-0.5 rounded">COMPLETADO</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between gap-3 p-3 bg-[#F4F7FE] rounded-xl">
-                        <div class="flex items-center gap-3">
-                            <div class="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
-                            </div>
-                            <div>
-                                <span class="text-xs font-extrabold text-[#1B254B] block">Retiro PayPal</span>
-                                <span class="text-[10px] font-semibold text-[#A3AED0]">01 Jun 2026 · pay***@email.com</span>
-                            </div>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="text-sm font-black text-emerald-500 block">+$50.00</span>
-                            <span class="text-[9px] font-extrabold uppercase text-emerald-500 bg-emerald-50 px-1.5 py-0.5 rounded">COMPLETADO</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between gap-3 p-3 bg-[#F4F7FE] rounded-xl">
-                        <div class="flex items-center gap-3">
-                            <div class="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
-                            </div>
-                            <div>
-                                <span class="text-xs font-extrabold text-[#1B254B] block">Crédito en cuenta</span>
-                                <span class="text-[10px] font-semibold text-[#A3AED0]">01 May 2026 · Crédito Nous</span>
-                            </div>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="text-sm font-black text-emerald-500 block">+$80.00</span>
-                            <span class="text-[9px] font-extrabold uppercase text-emerald-500 bg-emerald-50 px-1.5 py-0.5 rounded">COMPLETADO</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
         </div>
 
         {{-- ─── Right Sidebar (1/3) ────────────────────────────────── --}}

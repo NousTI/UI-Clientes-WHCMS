@@ -3,13 +3,81 @@
 @section('title', 'Mis Servicios')
 
 @section('content')
-<div x-data="{ currentFilter: 'todos' }" class="space-y-6">
+<div x-data="{ 
+    currentFilter: 'todos', 
+    showConsoleModal: false, 
+    selectedVps: null, 
+    vpsPowerState: 'on', 
+    isPowerLoading: false, 
+    powerLoadingAction: '', 
+    powerLoadingMessage: '', 
+    powerProgress: 0,
+    consoleLog: [],
+    runSimulatedAction(action) {
+        if (this.isPowerLoading) return;
+        
+        if (action === 'restart') {
+            if (!confirm('¿Estás seguro de que deseas reiniciar este VPS?')) return;
+            this.isPowerLoading = true;
+            this.powerLoadingAction = 'restart';
+            this.powerLoadingMessage = 'Reiniciando VPS...';
+            this.powerProgress = 0;
+            this.consoleLog.push('[SISTEMA] Enviando señal de reinicio (SIGTERM)...');
+            this.consoleLog.push('[SISTEMA] Deteniendo daemon de Docker y Nginx...');
+            
+            let interval = setInterval(() => {
+                this.powerProgress += 10;
+                if (this.powerProgress >= 100) {
+                    clearInterval(interval);
+                    this.isPowerLoading = false;
+                    this.vpsPowerState = 'on';
+                    this.consoleLog.push('[OK] Servidor VPS reiniciado correctamente.');
+                    this.consoleLog.push('[OK] Consola TTY1 lista para usar.');
+                }
+            }, 250);
+        } else if (action === 'off') {
+            if (!confirm('¿Estás seguro de que deseas apagar este VPS?')) return;
+            this.isPowerLoading = true;
+            this.powerLoadingAction = 'off';
+            this.powerLoadingMessage = 'Apagando VPS...';
+            this.powerProgress = 0;
+            this.consoleLog.push('[SISTEMA] Ejecutando apagado seguro (ACPI shutdown)...');
+            
+            let interval = setInterval(() => {
+                this.powerProgress += 20;
+                if (this.powerProgress >= 100) {
+                    clearInterval(interval);
+                    this.isPowerLoading = false;
+                    this.vpsPowerState = 'off';
+                    this.consoleLog.push('[ALERTA] El servidor se encuentra APAGADO.');
+                }
+            }, 200);
+        } else if (action === 'on') {
+            this.isPowerLoading = true;
+            this.powerLoadingAction = 'on';
+            this.powerLoadingMessage = 'Encendiendo VPS...';
+            this.powerProgress = 0;
+            this.consoleLog.push('[SISTEMA] Iniciando alimentación física del nodo...');
+            
+            let interval = setInterval(() => {
+                this.powerProgress += 20;
+                if (this.powerProgress >= 100) {
+                    clearInterval(interval);
+                    this.isPowerLoading = false;
+                    this.vpsPowerState = 'on';
+                    this.consoleLog.push('[OK] El servidor se encuentra ENCENDIDO.');
+                    this.consoleLog.push('[OK] Consola TTY1 activa.');
+                }
+            }, 200);
+        }
+    }
+}" class="space-y-6">
 
     {{-- ─── Page Header ────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h1 class="text-2xl font-extrabold text-[#1B254B] tracking-tight leading-tight">Mis Servicios</h1>
-            <p class="text-xs font-semibold text-[#A3AED0] mt-1">Administra y monitorea tu infraestructura de hosting</p>
+            <p class="text-xs font-semibold text-[#A3AED0] mt-1">Administra y monitorea tu infraestructura</p>
         </div>
         <div class="flex items-center gap-3">
             <a href="#" class="relative inline-flex items-center gap-2 bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 text-white text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-[0px_6px_20px_rgba(67,24,255,0.25)] transition-all duration-150 overflow-hidden group">
@@ -199,7 +267,26 @@
                                 @if ($service->status === 'active')
                                     <button class="h-8 w-8 rounded-lg text-[#A3AED0] hover:text-[#4318FF] hover:bg-[#F4F7FE] flex items-center justify-center transition-all cursor-pointer" title="Reiniciar"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg></button>
                                     <button class="h-8 w-8 rounded-lg text-[#A3AED0] hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-all cursor-pointer" title="Apagar"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9"/></svg></button>
-                                    <button class="h-8 w-8 rounded-lg bg-[#4318FF]/8 text-[#4318FF] hover:bg-[#4318FF] hover:text-white flex items-center justify-center transition-all cursor-pointer" title="Gestionar"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
+                                    <button 
+                                        @click="if ('{{ $service->type }}' === 'vps') { 
+                                            selectedVps = {{ json_encode($service) }}; 
+                                            showConsoleModal = true; 
+                                            vpsPowerState = 'on'; 
+                                            consoleLog = [
+                                                '[SISTEMA] Conectando a la consola serie VPS...',
+                                                '[OK] Conexión establecida con la IP {{ $service->ip_address }}',
+                                                '[OK] Consola TTY1 lista y autorizada.'
+                                            ]; 
+                                        } else { 
+                                            alert('La consola de administración interactiva solo está disponible para servidores VPS.'); 
+                                        }"
+                                        class="h-8 w-8 rounded-lg bg-[#4318FF]/8 text-[#4318FF] hover:bg-[#4318FF] hover:text-white flex items-center justify-center transition-all cursor-pointer" 
+                                        title="Gestionar"
+                                    >
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+                                        </svg>
+                                    </button>
                                 @else
                                     <a href="#" class="inline-flex items-center gap-1.5 bg-[#8AEF97] hover:bg-[#7AD887] active:scale-95 text-[#1B254B] text-[10px] font-extrabold py-2 px-3.5 rounded-xl transition-all shadow-sm">
                                         <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
@@ -278,6 +365,103 @@
                 </div>
             @endif
         </div>
+    </div>
+
+    <!-- Modal Consola VPS Premium -->
+    <div x-show="showConsoleModal" 
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         style="display: none;">
+         
+         <div class="bg-white rounded-[24px] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.15)] border border-[#E0E5F2] w-full max-w-xl overflow-hidden transform transition-all duration-300 flex flex-col max-h-[85vh]"
+              @click.away="if (!isPowerLoading) showConsoleModal = false"
+              x-transition:enter="transition ease-out duration-300"
+              x-transition:enter-start="opacity-0 scale-95"
+              x-transition:enter-end="opacity-100 scale-100"
+              x-transition:leave="transition ease-in duration-200"
+              x-transition:leave-start="opacity-100 scale-100"
+              x-transition:leave-end="opacity-0 scale-95">
+              
+             <!-- Cabecera -->
+             <div class="p-6 pb-4 border-b border-[#F4F7FE] flex items-center justify-between shrink-0 font-sans">
+                 <div class="flex items-center gap-3">
+                     <div class="h-9 w-9 rounded-lg bg-[#4318FF]/10 text-[#4318FF] flex items-center justify-center">
+                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21m0 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm11.586-1.586l.707.707a3 3 0 01.879 2.122L16.5 21m0 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM12 3v1.5m0 15V21m-9-9h1.5m15 0H21M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"/>
+                         </svg>
+                     </div>
+                     <div>
+                         <h3 class="text-sm font-extrabold text-[#1B254B]" x-text="selectedVps ? selectedVps.name : 'Consola VPS'"></h3>
+                         <div class="flex items-center gap-1.5 text-[9px] font-bold mt-0.5">
+                             <span x-text="selectedVps ? selectedVps.ip_address : ''" class="text-[#A3AED0]"></span>
+                             <span class="text-[#A3AED0]">•</span>
+                             <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-extrabold uppercase"
+                                   :class="vpsPowerState === 'on' ? 'bg-emerald-50 text-emerald-500' : 'bg-red-50 text-red-500'">
+                                 <span class="h-1 w-1 rounded-full" :class="vpsPowerState === 'on' ? 'bg-emerald-500' : 'bg-red-500'"></span>
+                                 <span x-text="vpsPowerState === 'on' ? 'Encendido' : 'Apagado'"></span>
+                             </span>
+                         </div>
+                     </div>
+                 </div>
+                 <button @click="showConsoleModal = false" :disabled="isPowerLoading" class="text-[#A3AED0] hover:text-[#1B254B] transition-colors cursor-pointer disabled:opacity-50">
+                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                     </svg>
+                 </button>
+             </div>
+
+             <!-- Contenido Consola TTY -->
+             <div class="p-6 bg-slate-950 font-mono text-xs text-slate-300 flex-1 overflow-y-auto space-y-2 min-h-[180px] max-h-[300px]">
+                 <!-- Mostrar carga si la hay -->
+                 <div x-show="isPowerLoading" class="flex flex-col gap-2 p-3 bg-slate-900/60 rounded-xl border border-white/5 mb-2">
+                     <div class="flex items-center justify-between text-[10px] text-white font-extrabold font-sans">
+                         <span x-text="powerLoadingMessage"></span>
+                         <span x-text="powerProgress + '%'"></span>
+                     </div>
+                     <div class="h-1.5 bg-slate-950 rounded-full overflow-hidden">
+                         <div class="h-full bg-[#4318FF] rounded-full transition-all duration-200" :style="'width: ' + powerProgress + '%'"></div>
+                     </div>
+                 </div>
+
+                 <!-- Log de Terminal -->
+                 <template x-for="(log, idx) in consoleLog" :key="idx">
+                     <div x-text="log" :class="log.includes('[OK]') ? 'text-emerald-400' : (log.includes('[ALERTA]') ? 'text-amber-400' : 'text-slate-400')"></div>
+                 </template>
+                 <div x-show="vpsPowerState === 'off' && !isPowerLoading" class="text-red-500 font-bold py-4 text-center font-sans text-[11px]">
+                     [SISTEMA] Sin conexión: Servidor Apagado. Presiona 'Encender' para arrancar.
+                 </div>
+             </div>
+
+             <!-- Botones de Acción / Footer -->
+             <div class="p-5 border-t border-[#F4F7FE] bg-white flex items-center justify-between shrink-0 font-sans">
+                 <div class="flex items-center gap-2">
+                     <button @click="runSimulatedAction('on')" 
+                             :disabled="vpsPowerState === 'on' || isPowerLoading" 
+                             class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 disabled:opacity-50 text-white text-[10px] font-extrabold px-3.5 py-2 rounded-xl transition-all cursor-pointer border-0">
+                         Encender
+                     </button>
+                     <button @click="runSimulatedAction('off')" 
+                             :disabled="vpsPowerState === 'off' || isPowerLoading" 
+                             class="bg-red-500 hover:bg-red-600 active:scale-95 disabled:opacity-50 text-white text-[10px] font-extrabold px-3.5 py-2 rounded-xl transition-all cursor-pointer border-0">
+                         Apagar
+                     </button>
+                     <button @click="runSimulatedAction('restart')" 
+                             :disabled="vpsPowerState === 'off' || isPowerLoading" 
+                             class="bg-[#4318FF] hover:bg-[#3311CC] active:scale-95 disabled:opacity-50 text-white text-[10px] font-extrabold px-3.5 py-2 rounded-xl transition-all cursor-pointer border-0">
+                         Reiniciar VPS
+                     </button>
+                 </div>
+                 
+                 <button @click="showConsoleModal = false" :disabled="isPowerLoading" class="bg-[#F4F7FE] hover:bg-[#E8EDF6] text-[#1B254B] text-[10px] font-extrabold px-4 py-2.5 rounded-xl transition-all cursor-pointer border-0 disabled:opacity-50">
+                     Cerrar Consola
+                 </button>
+             </div>
+         </div>
     </div>
 </div>
 @endsection

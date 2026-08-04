@@ -359,7 +359,7 @@
                     @endforelse
                 </div>
             </div>
-
+                            
             <!-- Botones de Acción -->
             <div class="mt-3.5 flex flex-col sm:flex-row gap-2">
                 <a href="{{ route('tickets') }}" class="flex-1 flex items-center justify-center gap-1.5 bg-[#F4F7FE] hover:bg-[#E0E5F2] text-[10px] font-extrabold text-[#4318FF] py-2.5 px-3 rounded-lg border border-[#E0E5F2] transition-all group duration-200">

@@ -64,7 +64,7 @@ test('authenticated users can visit the invoices page', function () {
 
 test('authenticated users can visit the tickets page', function () {
     $user = User::factory()->create();
-    Ticket::factory()->count(3)->create(['user_id' => $user->id]);
+    $Ticket = Ticket::factory()->count(3)->create(['user_id' => $user->id]);
 
     $this->actingAs($user);
 
@@ -73,4 +73,23 @@ test('authenticated users can visit the tickets page', function () {
         ->assertViewHas('tickets')
         ->assertViewHas('ticketsCount')
         ->assertViewHas('openTicketsCount');
+});
+
+test('authenticated users can download their own invoice as PDF', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    $response = $this->get(route('invoices.download', 301));
+    $response->assertOk();
+    $response->assertHeader('Content-Disposition', 'attachment; filename=factura-NTE-2026-894.pdf');
+});
+
+test('authenticated users cannot download invalid or non-owned invoices', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    $response = $this->get(route('invoices.download', 999));
+    $response->assertStatus(403);
 });
