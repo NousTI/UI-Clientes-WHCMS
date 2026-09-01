@@ -75,21 +75,74 @@ test('authenticated users can visit the tickets page', function () {
         ->assertViewHas('openTicketsCount');
 });
 
-test('authenticated users can download their own invoice as PDF', function () {
+test('authenticated users can visit the affiliates page', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user);
 
-    $response = $this->get(route('invoices.download', 301));
+    $response = $this->get(route('affiliates'));
+    $response->assertOk()
+        ->assertViewHas('referrals')
+        ->assertViewHas('referralsCount')
+        ->assertViewHas('activeCount')
+        ->assertViewHas('pendingCount')
+        ->assertViewHas('totalEarned')
+        ->assertViewHas('pendingPayout');
+});
+
+test('authenticated users can create a support ticket', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    $response = $this->post(route('tickets.store'), [
+        'subject' => 'Problema con mi servicio',
+        'department' => 'Soporte Técnico',
+        'priority' => 'high',
+        'message' => 'No puedo acceder al servidor.',
+    ]);
+
+    $response->assertRedirect(route('tickets'));
+    $response->assertSessionHas('success');
+
+    $this->assertDatabaseHas('tickets', [
+        'user_id' => $user->id,
+        'subject' => 'Problema con mi servicio',
+        'department' => 'Soporte Técnico',
+        'priority' => 'high',
+        'status' => 'open',
+    ]);
+
+    $this->assertDatabaseHas('ticket_messages', [
+        'user_id' => $user->id,
+        'message' => 'No puedo acceder al servidor.',
+        'is_agent' => false,
+    ]);
+});
+
+test('authenticated users can download their own invoice as PDF', function () {
+    $user = User::factory()->create();
+    $invoice = Invoice::factory()->create([
+        'user_id' => $user->id,
+        'invoice_number' => '#FAC-2026-001',
+    ]);
+
+    $this->actingAs($user);
+
+    $response = $this->get(route('invoices.download', $invoice->id));
     $response->assertOk();
-    $response->assertHeader('Content-Disposition', 'attachment; filename=factura-NTE-2026-894.pdf');
+    $response->assertHeader('Content-Disposition', 'attachment; filename=factura-FAC-2026-001.pdf');
 });
 
 test('authenticated users cannot download invalid or non-owned invoices', function () {
     $user = User::factory()->create();
+    $otherUser = User::factory()->create();
+    $otherInvoice = Invoice::factory()->create([
+        'user_id' => $otherUser->id,
+    ]);
 
     $this->actingAs($user);
 
-    $response = $this->get(route('invoices.download', 999));
+    $response = $this->get(route('invoices.download', $otherInvoice->id));
     $response->assertStatus(403);
 });

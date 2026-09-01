@@ -273,9 +273,6 @@ body {
 .dark .text-\[\#A3AED0\] {
     color: var(--nous-text-secondary) !important;
 }
-.dark .border-\[\#F4F7FE\] {
-    border-color: var(--nous-border) !important;
-}
 .dark .border-white\/50,
 .dark .border-white\/60,
 .dark .border-white\/20,

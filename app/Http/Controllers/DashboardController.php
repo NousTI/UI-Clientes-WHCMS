@@ -2,124 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Domain;
+use App\Http\Requests\StoreTicketRequest;
 use App\Models\Invoice;
-use App\Models\Service;
 use App\Models\Ticket;
-use App\Models\TicketMessage;
-use App\Services\WhmcsService;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    private $clientId = null;
-
-    private $services = null;
-
-    private $domains = null;
-
-    private $invoices = null;
-
-    private function getWhmcsClientId($user)
+    /**
+     * Display the client dashboard overview.
+     */
+    public function index(): View
     {
-        if ($this->clientId === null) {
-            $details = WhmcsService::getClientDetailsByEmail($user->email);
-            $this->clientId = $details['clientid'] ?? null;
-        }
+        $user = Auth::user();
 
-        return $this->clientId;
-    }
+        $services = $user->services()->get();
+        $domains = $user->domains()->get();
+        $invoices = $user->invoices()->orderByDesc('due_at')->get();
+        $tickets = $user->tickets()->orderByDesc('id')->get();
 
-    private function getWhmcsServices($user)
-    {
-        if ($this->services === null) {
-            $clientId = $this->getWhmcsClientId($user);
-            if (! $clientId) {
-                $this->services = collect();
-            } else {
-                $this->services = collect(WhmcsService::getProducts($clientId))->map(function ($item) {
-                    return (new Service)->forceFill([
-                        'id' => $item['id'],
-                        'name' => $item['name'],
-                        'type' => $item['type'],
-                        'status' => $item['status'],
-                        'ip_address' => $item['ip_address'],
-                        'location' => $item['location'],
-                        'price' => $item['price'],
-                        'billing_cycle' => $item['billing_cycle'],
-                        'uptime' => $item['uptime'],
-                        'cpu_usage' => $item['cpu_usage'],
-                        'expires_at' => $item['expires_at'],
-                    ]);
-                });
-            }
-        }
-
-        return $this->services;
-    }
-
-    private function getWhmcsDomains($user)
-    {
-        if ($this->domains === null) {
-            $clientId = $this->getWhmcsClientId($user);
-            if (! $clientId) {
-                $this->domains = collect();
-            } else {
-                $this->domains = collect(WhmcsService::getDomains($clientId))->map(function ($item) {
-                    return (new Domain)->forceFill([
-                        'id' => $item['id'],
-                        'domain_name' => $item['domain_name'],
-                        'status' => $item['status'],
-                        'is_locked' => true,
-                        'auto_renew' => true,
-                        'dns_type' => 'Cloudflare DNS',
-                        'price' => $item['recurring_amount'] ?? 12.99,
-                        'expires_at' => $item['expiry_date'] ?? now()->addYear(),
-                    ]);
-                });
-            }
-        }
-
-        return $this->domains;
-    }
-
-    private function getWhmcsInvoices($user)
-    {
-        if ($this->invoices === null) {
-            $clientId = $this->getWhmcsClientId($user);
-            if (! $clientId) {
-                $this->invoices = collect();
-            } else {
-                $this->invoices = collect(WhmcsService::getInvoices($clientId))->map(function ($item) {
-                    return (new Invoice)->forceFill([
-                        'id' => $item['id'],
-                        'invoice_number' => $item['invoice_number'],
-                        'description' => $item['description'],
-                        'amount' => $item['amount'],
-                        'status' => $item['status'],
-                        'due_at' => $item['due_at'],
-                        'paid_at' => $item['paid_at'],
-                        'created_at' => $item['due_at'] ? $item['due_at']->copy()->subDays(30) : now(),
-                    ]);
-                })->sortByDesc('due_at');
-            }
-        }
-
-        return $this->invoices;
-    }
-
-    public function index()
-    {
-        $user = auth()->user();
-
-        $services = $this->getWhmcsServices($user);
-        $domains = $this->getWhmcsDomains($user);
-        $invoices = $this->getWhmcsInvoices($user);
-
-        // Stats
         $servicesCount = $services->count();
-
         $activeServicesCount = $services->where('status', 'active')->count();
 
         $invoicesCount = $invoices->count();
@@ -127,14 +33,11 @@ class DashboardController extends Controller
 
         $domainsCount = $domains->count();
 
-        $tickets = $user->tickets()->orderBy('id', 'desc')->take(3)->get();
-        $ticketsCount = $user->tickets()->count();
-        $openTicketsCount = $user->tickets()->where('status', 'open')->count();
+        $ticketsCount = $tickets->count();
+        $openTicketsCount = $tickets->where('status', 'open')->count();
 
         $recentInvoices = $invoices->take(3);
-        $recentTickets = $tickets;
-
-        // Active Services list for the dashboard table
+        $recentTickets = $tickets->take(3);
         $services = $services->where('status', 'active')->take(4);
 
         return view('dashboard.index', compact(
@@ -152,10 +55,13 @@ class DashboardController extends Controller
         ));
     }
 
-    public function services()
+    /**
+     * Display client services.
+     */
+    public function services(): View
     {
-        $user = auth()->user();
-        $services = $this->getWhmcsServices($user);
+        $user = Auth::user();
+        $services = $user->services()->get();
 
         $servicesCount = $services->count();
         $activeServicesCount = $services->where('status', 'active')->count();
@@ -173,10 +79,13 @@ class DashboardController extends Controller
         ));
     }
 
-    public function domains()
+    /**
+     * Display client domains.
+     */
+    public function domains(): View
     {
-        $user = auth()->user();
-        $domains = $this->getWhmcsDomains($user);
+        $user = Auth::user();
+        $domains = $user->domains()->get();
 
         $domainsCount = $domains->count();
         $activeDomainsCount = $domains->where('status', 'active')->count();
@@ -190,18 +99,20 @@ class DashboardController extends Controller
         ));
     }
 
-    public function invoices()
+    /**
+     * Display client invoices.
+     */
+    public function invoices(): View
     {
-        $user = auth()->user();
-        $invoices = $this->getWhmcsInvoices($user);
+        $user = Auth::user();
+        $invoices = $user->invoices()->orderByDesc('due_at')->get();
 
         $invoicesCount = $invoices->count();
         $pendingInvoicesCount = $invoices->where('status', 'unpaid')->count();
         $totalPaidAmount = $invoices->where('status', 'paid')->sum('amount');
         $totalUnpaidAmount = $invoices->where('status', 'unpaid')->sum('amount');
 
-        // Active services for billing summary
-        $activeServices = $this->getWhmcsServices($user)->where('status', 'active');
+        $activeServices = $user->services()->where('status', 'active')->get();
         $monthlyBillingTotal = $activeServices->sum(function ($service) {
             return $service->billing_cycle === 'año' ? ($service->price / 12) : $service->price;
         });
@@ -217,10 +128,13 @@ class DashboardController extends Controller
         ));
     }
 
-    public function tickets()
+    /**
+     * Display client support tickets.
+     */
+    public function tickets(): View
     {
-        $user = auth()->user();
-        $tickets = $user->tickets()->with('messages')->orderBy('updated_at', 'desc')->get();
+        $user = Auth::user();
+        $tickets = $user->tickets()->with('messages')->orderByDesc('updated_at')->get();
 
         $ticketsCount = $tickets->count();
         $openTicketsCount = $tickets->where('status', 'open')->count();
@@ -234,10 +148,13 @@ class DashboardController extends Controller
         ));
     }
 
-    public function affiliates()
+    /**
+     * Display affiliate statistics and referrals.
+     */
+    public function affiliates(): View
     {
-        $user = auth()->user();
-        $referrals = $user->referrals()->orderBy('registered_at', 'desc')->get();
+        $user = Auth::user();
+        $referrals = $user->referrals()->orderByDesc('registered_at')->get();
 
         $referralsCount = $referrals->count();
         $activeCount = $referrals->where('status', 'active')->count();
@@ -256,52 +173,45 @@ class DashboardController extends Controller
         ));
     }
 
-    public function storeTicket(Request $request)
+    /**
+     * Store a new support ticket.
+     */
+    public function storeTicket(StoreTicketRequest $request): RedirectResponse
     {
-        $request->validate([
-            'subject' => 'required|string|max:255',
-            'department' => 'required|string|max:255',
-            'priority' => 'required|string|in:low,medium,high,critical',
-            'message' => 'required|string',
-        ]);
+        $user = Auth::user();
 
-        $user = auth()->user();
-
-        // Create the Ticket
-        $ticket = Ticket::create([
-            'user_id' => $user->id,
+        $ticket = $user->tickets()->create([
             'ticket_number' => 'TK-'.rand(100000, 999999),
-            'subject' => $request->subject,
-            'department' => $request->department,
-            'priority' => $request->priority,
+            'subject' => $request->validated('subject'),
+            'department' => $request->validated('department'),
+            'priority' => $request->validated('priority'),
             'status' => 'open',
         ]);
 
-        // Create the first Message
-        TicketMessage::create([
-            'ticket_id' => $ticket->id,
+        $ticket->messages()->create([
             'user_id' => $user->id,
-            'message' => $request->message,
+            'message' => $request->validated('message'),
             'is_agent' => false,
         ]);
 
         return redirect()->route('tickets')->with('success', '¡Ticket de soporte creado con éxito!');
     }
 
-    public function downloadInvoice($invoiceId)
+    /**
+     * Download an invoice PDF.
+     */
+    public function downloadInvoice(int|string $invoiceId): Response
     {
-        $user = auth()->user();
-        $invoices = $this->getWhmcsInvoices($user);
-
-        // Find the invoice in the user's WHMCS invoices to ensure ownership
-        $invoice = $invoices->firstWhere('id', (int) $invoiceId);
+        $user = Auth::user();
+        $invoice = $user->invoices()->where('id', $invoiceId)->first();
 
         if (! $invoice) {
             abort(403, 'No tienes permiso para descargar esta factura o no existe.');
         }
 
         $pdf = Pdf::loadView('pdf.invoice', compact('invoice', 'user'));
+        $cleanNumber = ltrim($invoice->invoice_number, '#');
 
-        return $pdf->download('factura-'.$invoice->invoice_number.'.pdf');
+        return $pdf->download("factura-{$cleanNumber}.pdf");
     }
 }

@@ -36,11 +36,8 @@ return [
     ],
 
     'whmcs' => [
-        'url' => env('WHMCS_API_URL'),
-        'identifier' => env('WHMCS_API_IDENTIFIER'),
-        'secret' => env('WHMCS_API_SECRET'),
-        'username' => env('WHMCS_API_USERNAME'),
-        'password' => env('WHMCS_API_PASSWORD'),
+        'url' => env('WHMCS_URL'),
+        'identifier' => env('WHMCS_IDENTIFIER'),
+        'secret' => env('WHMCS_SECRET'),
     ],
-
 ];

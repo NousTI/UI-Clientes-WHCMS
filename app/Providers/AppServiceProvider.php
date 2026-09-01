@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\View\Composers\AlertComposer;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Livewire;
@@ -40,6 +42,8 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Blade::anonymousComponentPath(resource_path('views/settings'), 'settings');
+
+        View::composer(['layouts.app', 'layouts.*'], AlertComposer::class);
     }
 
     /**

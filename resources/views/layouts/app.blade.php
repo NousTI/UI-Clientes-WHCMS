@@ -66,31 +66,10 @@
             <!-- Content -->
             <main class="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
                 <!-- Banner de Alerta de Pago Pendiente -->
-                @php
-                    $overdueInvoice = null;
-                    $expiringDomain = null;
-                    if (auth()->check()) {
-                        $overdueInvoice = auth()->user()->invoices()->where(function($query) {
-                            $query->where('status', 'overdue')
-                                  ->orWhere(function($q) {
-                                      $q->where('status', 'unpaid')
-                                        ->where('due_at', '<', now());
-                                  });
-                        })->first();
-
-                        $expiringDomain = auth()->user()->domains()
-                            ->where('status', 'active')
-                            ->where('expires_at', '<=', now()->addDays(30))
-                            ->first();
-                    }
-                @endphp
-
-                @if($overdueInvoice)
+                @if(!empty($overdueInvoice))
                     @php
                         $daysOverdue = now()->diffInDays($overdueInvoice->due_at);
-                        $overdueText = $daysOverdue == 0 
-                            ? "Factura {$overdueInvoice->invoice_number} vencida  suspensión del servicio."
-                            : "Factura {$overdueInvoice->invoice_number} vencida  suspensión del servicio.";
+                        $overdueText = "Factura {$overdueInvoice->invoice_number} vencida — regulariza tu pago para evitar suspensión del servicio.";
                     @endphp
                     <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="mb-6 bg-gradient-to-r from-[#A31D1D] to-[#801616] rounded-[20px] p-4 text-white relative overflow-hidden shadow-[0px_18px_40px_rgba(163,29,29,0.12)] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none group/alert font-sans">
                         <!-- Figma-style overlay glow -->
@@ -105,7 +84,7 @@
                             </div>
                             <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                                 <span class="text-xs font-bold leading-tight text-white">{{ $overdueText }}</span>
-                                @if($expiringDomain)
+                                @if(!empty($expiringDomain))
                                     <span class="text-xs font-medium leading-tight text-[#FFE680]">Dominio {{ $expiringDomain->domain_name }} vence el {{ \Carbon\Carbon::parse($expiringDomain->expires_at)->translatedFormat('d \d\e M') }}.</span>
                                 @endif
                             </div>

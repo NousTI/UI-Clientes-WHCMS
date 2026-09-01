@@ -8,7 +8,9 @@
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
             <!-- Icono Cuadrado Violeta-Azul -->
             <div class="h-10 w-10 rounded-xl bg-[#4318FF] text-white flex items-center justify-center shadow-md shadow-[#4318FF]/20 select-none">
-                < />
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                </svg>
             </div>
             <div class="flex flex-col leading-none">
                 <span class="text-base font-black tracking-wider text-[#4318FF]">NOUS</span>

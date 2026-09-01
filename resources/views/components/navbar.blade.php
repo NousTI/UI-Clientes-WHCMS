@@ -69,7 +69,6 @@
                 x-transition:leave="transition ease-in duration-75"
                 x-transition:leave-start="transform opacity-100 scale-100"
                 x-transition:leave-end="transform opacity-0 scale-95"
-                x-trasciocion:leave-end="trasnform opacity-0 scale-95"
 
                 class="nous-dropdown absolute right-0 mt-3 w-80 origin-top-right rounded-2xl p-4 border focus:outline-hidden z-50"
                 style="display: none;"
